@@ -41,10 +41,8 @@ function ArtPreview({ thumbnail, id, title, text, view, like, isLatest }) {
       >
         <a
           className="block"
-          href={`/blog/${AES.encrypt(
-            id,
-            import.meta.env.VITE_SECRET_KEY
-          ).toString()}`}
+          href={`/blog/${id}`}
+          // href={`/blog/${AES.encrypt(id, import.meta.env.VITE_SECRET_KEY).toString()}`}
         >
           <h1
             className={

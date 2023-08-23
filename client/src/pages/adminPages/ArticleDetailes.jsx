@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import DeleteAlert from "./DeleteAlert";
 import axios from "axios";
 import { generateError, generatesuccess } from "../../utility/Toasts";
@@ -52,7 +53,7 @@ function ArticleDetailes({
               }}
               title="Delete Article"
             >
-              <box-icon name="x" color="white"></box-icon>
+              <AiOutlineDelete size={24} />
             </span>
           </div>
         </div>

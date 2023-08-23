@@ -11,6 +11,7 @@ const UserRoute = require("./routes/userroutes");
 
 // models
 const Admin = require("./models/adminModel");
+const User = require("./models/userModel");
 const Article = require("./models/articleModel");
 const About = require("./models/aboutModel");
 const Comment = require("./models/commentModel");

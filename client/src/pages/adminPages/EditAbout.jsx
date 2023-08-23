@@ -1,14 +1,18 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { generateError, generatesuccess } from "../../utility/Toasts";
+import { ToastContainer } from "react-toastify";
 
 function EditAbout() {
   const [aboutText, setAboutText] = useState("");
   const [photo, setPhoto] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState("");
 
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
     setPhoto(file);
+    setSelectedFile(file.name);
   };
 
   const handleAboutChange = (e) => {
@@ -19,19 +23,29 @@ function EditAbout() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append("profile", photo);
-    formdata.append("text", aboutText);
+    const fileExtention = photo.name.split(".")[1];
+    setIsUploading(true);
+    if (fileExtention !== "php") {
+      formdata.append("profile", photo);
+      formdata.append("text", aboutText);
 
-    axios
-      .post("http://localhost:3007/edit/about", formdata)
-      .then((response) => {
-        if (response.status == 200) {
-          generatesuccess(response.data);
-          setAboutText("");
-        } else {
-          generateError(response.data);
-        }
-      });
+      axios
+        .post("http://localhost:3007/edit/about", formdata)
+        .then((response) => {
+          if (response.status == 200) {
+            generatesuccess(response.data);
+            setAboutText("");
+            setSelectedFile("Select profile image");
+            setIsUploading(false);
+          } else {
+            generateError(response.data);
+            setIsUploading(false);
+          }
+        });
+    } else {
+      generateError("Invalid file formate!");
+      setIsUploading(false);
+    }
   };
   return (
     <form
@@ -44,13 +58,13 @@ function EditAbout() {
           htmlFor="selectavatar"
           className="absolute bg-[#7396ae] w-full h-full p-1 font-semibold hover:text-[#5c5d61] text-center rounded-md "
         >
-          Select profile image
+          {selectedFile ? selectedFile : "Select profile image"}
         </label>
         <input
           id="selectavatar"
           className="w-full h-full rounded-md"
           type="file"
-          accept="image/*"
+          accept="image/png, image/jpeg, image/jpg "
           onChange={handleProfileChange}
         />
       </div>
@@ -63,12 +77,24 @@ function EditAbout() {
         placeholder="Write about your self"
         onChange={handleAboutChange}
       ></textarea>
-      <button
-        type="submit"
-        className="bg-[#7396ae] hover:text-[#5c5d61] mt-2 p-2 rounded-md "
-      >
-        Update
-      </button>
+      {!isUploading ? (
+        <button
+          type="submit"
+          className="bg-[#7396ae] hover:text-[#5c5d61] mt-2 p-2 rounded-md flex gap-2 justify-center"
+        >
+          Update
+        </button>
+      ) : (
+        <button
+          type="submit"
+          className="bg-[#7396ae] hover:text-[#5c5d61] mt-2 p-2 rounded-md flex gap-2 justify-center"
+        >
+          Updating
+          <span className=" animate-spin inline-block w-5 h-5 rounded-full border-white border-solid border-2 border-x-transparent"></span>
+        </button>
+      )}
+
+      <ToastContainer />
     </form>
   );
 }

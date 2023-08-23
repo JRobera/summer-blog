@@ -7,8 +7,8 @@ const AdminSchema = mongoose.Schema({
       "https://res.cloudinary.com/dbv6hao81/image/upload/v1692457733/admin_default_image_vmyvub.jpg",
   },
   public_id: { type: String },
-  user: { type: String },
-  password: { type: String },
+  user: { type: String, required: true },
+  password: { type: String, required: true },
   refreshToken: { type: String },
 });
 

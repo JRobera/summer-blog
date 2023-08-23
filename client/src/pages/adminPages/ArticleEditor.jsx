@@ -19,26 +19,32 @@ function ArticleEditor() {
 
   const handleSubmit = () => {
     const formData = new FormData();
-    formData.append("header", header);
-    formData.append("thumbnail", thumbnail);
-    formData.append("article", value);
-    setIsPublishing(true);
-    if (header !== "" && value !== "") {
-      axios
-        .post("http://localhost:3007/publish/article", formData)
-        .then((response) => {
-          if (response.status == 200) {
-            generatesuccess(response.data);
-            setHeader("");
-            setValue("");
-            setIsPublishing(false);
-          } else {
-            setIsPublishing(false);
-            generateError(response.data);
-          }
-        });
+    const fileExtention = thumbnail.name.split(".")[1];
+
+    if (fileExtention !== "php") {
+      formData.append("header", header);
+      formData.append("thumbnail", thumbnail);
+      formData.append("article", value);
+      setIsPublishing(true);
+      if (header !== "" && value !== "") {
+        axios
+          .post("http://localhost:3007/publish/article", formData)
+          .then((response) => {
+            if (response.status == 200) {
+              generatesuccess(response.data);
+              setHeader("");
+              setValue("");
+              setIsPublishing(false);
+            } else {
+              setIsPublishing(false);
+              generateError(response.data);
+            }
+          });
+      } else {
+        generateError("Can not publish article with empty header or article!");
+      }
     } else {
-      generateError("Can not publish article with empty header or article!");
+      generateError("Invalid file formate!");
     }
   };
 
@@ -70,7 +76,7 @@ function ArticleEditor() {
               className=" text-center rounded-md"
               id="thumbnail"
               type="file"
-              accept="image/*"
+              accept="image/png, image/jpeg, image/jpg "
               onChange={handleThumbnail}
             />
           </div>

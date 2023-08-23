@@ -1,18 +1,47 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import NavLink from "./NavLink";
 import HamBurgerMenu from "../HamBurgerMenu";
+import axios from "axios";
+import { generateError, generatesuccess } from "../../utility/Toasts";
+import { BlogContext } from "../../context/BlogContext";
 
 function NavBar() {
+  const { user } = useContext(BlogContext);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const handleMenuClick = () => {
     setIsNavOpen(!isNavOpen);
   };
-  const hanldeLogout = () => {};
+
+  const history = useNavigate();
+  const redirect = () => {
+    history("/");
+  };
+
+  const hanldeLogout = () => {
+    axios
+      .post(
+        "http://localhost:3007/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        if (res.status == 200) {
+          redirect();
+          generatesuccess(res.data);
+          setUser({});
+          setAccessToken({});
+        } else {
+          generateError();
+        }
+      });
+  };
 
   const links = [
-    { link: "/", linkName: "Home", color: "" },
+    { link: "/home", linkName: "Home", color: "" },
     { link: "/about", linkName: "About", color: "" },
     { link: "/contact", linkName: "Contact", color: "" },
   ];
@@ -46,10 +75,12 @@ function NavBar() {
             );
           })}
         </div>
+
         <div className="flex gap-2 items-center justify-center">
+          {user?.user}
           <button
             onClick={hanldeLogout}
-            className="font-semibold bg-[#557a95] p-1 rounded-lg"
+            className="font-semibold mr-2 hover:text-[#557a95]"
           >
             Logout
           </button>

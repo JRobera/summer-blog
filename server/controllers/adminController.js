@@ -61,7 +61,7 @@ const adminLogin = (req, res) => {
               { refreshToken: refreshToken }
             ).then((response) => {
               if (!response) {
-                console.log("error tocken not updated");
+                console.log("Error Token not updated");
               }
             });
             res.cookie("adjwt", refreshToken, {
@@ -102,7 +102,7 @@ const refreshAccessToken = (req, res) => {
       jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
-        (err, user) => {
+        (err, result) => {
           if (err) return res.sendStatus(403);
 
           const accessToken = jwt.sign(admin, process.env.ACCESS_TOKEN_SECRET, {
@@ -176,32 +176,44 @@ const logOut = (req, res) => {
 };
 
 const editAboutUs = async (req, res) => {
-  console.log(req.file.path);
-  console.log(req.body);
+  console.log(req.file.mimetype);
   About.deleteMany({}).then((response) => {});
-  try {
-    const data = await uploadToCloudinary(req.file.path, "about_us_img");
+  if (
+    req.file.mimetype == "image/png" ||
+    req.file.mimetype == "image/jpg" ||
+    req.file.mimetype == "image/jpeg"
+  ) {
+    try {
+      const data = await uploadToCloudinary(req.file.path, "about_us_img");
+      console.log(data);
 
-    const about = new About({
-      profile: data.url,
-      public_id: data.public_id,
-      text: req.body.text,
-    });
-    const saveImg = await About.updateOne(
-      {
-        _id: about._id,
-      },
-      {
-        $set: {
+      if (data) {
+        const about = new About({
           profile: data.url,
           public_id: data.public_id,
-        },
+          text: req.body.text,
+        });
+        const saveImg = await About.updateOne(
+          {
+            _id: about._id,
+          },
+          {
+            $set: {
+              profile: data.url,
+              public_id: data.public_id,
+            },
+          }
+        );
+        const saveAbout = await about.save();
+        res.status(200).json("About page updated");
+      } else {
+        res.status(203).json("Oops something went wrong!");
       }
-    );
-    const saveAbout = await about.save();
-    res.status(200).json("About page updated");
-  } catch (error) {
-    res.status(400).json(error);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  } else {
+    res.status(400).json("Invalid File Type");
   }
 };
 
@@ -226,34 +238,42 @@ const changeProfileBG = async (req, res) => {
 };
 
 const publishArticle = async (req, res) => {
-  try {
-    const data = await uploadToCloudinary(
-      req.file.path,
-      "article_image_folder"
-    );
+  if (
+    req.file.mimetype == "image/png" ||
+    req.file.mimetype == "image/jpg" ||
+    req.file.mimetype == "image/jpeg"
+  ) {
+    try {
+      const data = await uploadToCloudinary(
+        req.file.path,
+        "article_image_folder"
+      );
 
-    const article = new Article({
-      header: req.body.header,
-      thumbnail: data.url,
-      public_id: data.public_id,
-      content: req.body.article,
-    });
+      const article = new Article({
+        header: req.body.header,
+        thumbnail: data.url,
+        public_id: data.public_id,
+        content: req.body.article,
+      });
 
-    const saveThumbnail = await Article.updateOne(
-      {
-        _id: article._id,
-      },
-      {
-        $set: {
-          thumbnail: data.url,
-          public_id: data.public_id,
+      const saveThumbnail = await Article.updateOne(
+        {
+          _id: article._id,
         },
-      }
-    );
-    const saveArticle = await article.save();
-    res.status(200).json("Article published Successfully!");
-  } catch (error) {
-    res.status(400).json(error);
+        {
+          $set: {
+            thumbnail: data.url,
+            public_id: data.public_id,
+          },
+        }
+      );
+      const saveArticle = await article.save();
+      res.status(200).json("Article published Successfully!");
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  } else {
+    res.status(400).json("Invalid File Type");
   }
 };
 

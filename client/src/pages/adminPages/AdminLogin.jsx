@@ -42,8 +42,10 @@ function AdminLogin() {
           setAccessToken(response.data.accessToken);
           generatesuccess("Login successful");
           redirect();
+          reset();
         } else {
           generateError(response.data);
+          reset();
         }
       })
       .catch((err) => {

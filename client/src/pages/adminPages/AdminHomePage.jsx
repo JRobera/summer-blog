@@ -18,18 +18,22 @@ function AdminHomePage() {
 
   const handleSelectCoverImage = (e) => {
     const file = e.target.files[0];
-
-    const formData = new FormData();
-    formData.append("profile-bg", file);
-    formData.append("id", admin?._id);
-    axios.post("http://localhost:3007/change-bg", formData).then((res) => {
-      if (res.status == 200) {
-        generatesuccess(res.data);
-        setAdmin(res.data);
-      } else {
-        generateError(res.data);
-      }
-    });
+    const fileExtention = file.name.split(".")[1];
+    if (fileExtention !== "php") {
+      const formData = new FormData();
+      formData.append("profile-bg", file);
+      formData.append("id", admin?._id);
+      axios.post("http://localhost:3007/change-bg", formData).then((res) => {
+        if (res.status == 200) {
+          generatesuccess(res.data);
+          setAdmin(res.data);
+        } else {
+          generateError(res.data);
+        }
+      });
+    } else {
+      generateError("Invalid file formate!");
+    }
   };
 
   useEffect(() => {
