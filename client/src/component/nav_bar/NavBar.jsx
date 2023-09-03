@@ -3,12 +3,28 @@ import { Link, useNavigate } from "react-router-dom";
 import NavLink from "./NavLink";
 import HamBurgerMenu from "../HamBurgerMenu";
 import axios from "axios";
+import { TfiWrite } from "react-icons/tfi";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { BlogContext } from "../../context/BlogContext";
+import SearchArticle from "../SearchArticle";
+import { BsSearch } from "react-icons/bs";
+import ProfileCard from "../ProfileCard";
 
 function NavBar() {
-  const { user } = useContext(BlogContext);
+  const { user, setUser, accessToken, setAccessToken } =
+    useContext(BlogContext);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isProfileVisiable, setIsProfileVisiable] = useState(false);
+  const { articles, setArticles } = useContext(BlogContext);
+  const [SearchVisiable, setSearchVisiable] = useState(false);
+
+  useEffect(() => {
+    axios.get("http://localhost:3007/get/articles").then((response) => {
+      if (response.status == 200) {
+        setArticles(response.data);
+      }
+    });
+  }, []);
 
   const handleMenuClick = () => {
     setIsNavOpen(!isNavOpen);
@@ -19,7 +35,7 @@ function NavBar() {
     history("/");
   };
 
-  const hanldeLogout = () => {
+  const handleLogout = () => {
     axios
       .post(
         "http://localhost:3007/logout",
@@ -40,6 +56,10 @@ function NavBar() {
       });
   };
 
+  const handleSearchClick = () => {
+    setSearchVisiable(!SearchVisiable);
+  };
+
   const links = [
     { link: "/home", linkName: "Home", color: "" },
     { link: "/about", linkName: "About", color: "" },
@@ -47,54 +67,47 @@ function NavBar() {
   ];
 
   return (
-    <nav className="flex items-center bg-[#7395ae] rounded-3xl mx-auto p-2 sticky top-1 z-20 shadow-lg relative">
-      <a href="/" className=" w-8 h-8 rounded-full overflow-hidden">
+    <nav className="flex gap-3 items-center bg-[#7395ae] rounded-full mx-auto p-2 sticky top-1 z-20 shadow-lg">
+      <Link
+        to={accessToken ? "/home" : "/"}
+        className=" w-8 h-8 rounded-full overflow-hidden"
+      >
         <img
           className=" w-full h-full"
           src="https://res.cloudinary.com/dbv6hao81/image/upload/v1692465041/logo_p8oote.jpg"
           alt="Blog logo"
         />
-      </a>
-      <div
-        className={
-          isNavOpen
-            ? "md:static md:flex-row md:gap-10 md:bg-transparent md:scale-100 md:translate-x-0 md:opacity-100 inline-flex flex-col gap-4 flex-grow justify-center text-center bg-[#7395ae] absolute -bottom-32 top-12 left-1/2 -translate-x-1/2 rounded-b-md w-4/5 transition duration-150 "
-            : "md:static md:flex-row md:gap-10 md:bg-transparent md:scale-100 md:translate-x-0 md:opacity-100 inline-flex flex-col gap-4 flex-grow justify-center text-center w-full bg-[#7395ae] -bottom-0 top-0 left-0  transition absolute scale-50  opacity-0 duration-150"
-        }
-      >
-        <div
-          className={
-            isNavOpen
-              ? "md:static md:flex-row md:gap-10 md:translate-x-0 inline-flex flex-col gap-4 flex-grow justify-center "
-              : "md:static md:flex-row md:gap-10 md:translate-x-0 inline-flex flex-col gap-4 flex-grow justify-center  "
-          }
-        >
-          {links.map((link, i) => {
-            return (
-              <NavLink key={i} link={link.link} linkName={link.linkName} />
-            );
-          })}
+      </Link>
+      <SearchArticle articles={articles} isvisiable={SearchVisiable} />
+      {/* <div className=""> */}
+      <div className="flex gap-2 items-center flex-1 justify-end">
+        <div className=" sm:hidden" onClick={handleSearchClick}>
+          <BsSearch size={15} />
         </div>
-
-        <div className="flex gap-2 items-center justify-center">
-          {user?.user}
-          <button
-            onClick={hanldeLogout}
-            className="font-semibold mr-2 hover:text-[#557a95]"
-          >
-            Logout
-          </button>
-          <div className=" rounded-full w-8 h-8 overflow-hidden">
-            <img
-              src="/image/logo.jpg"
-              className=" object-fill w-full h-full"
-              alt=""
-            />
+        <Link to="/write/article">
+          <div className="flex gap-2 items-center ml-4">
+            <TfiWrite />
+            <p>Write</p>
           </div>
-        </div>
-      </div>
+        </Link>
 
-      <HamBurgerMenu handleMenuClick={handleMenuClick} />
+        <div
+          className=" rounded-full w-8 h-8 overflow-hidden"
+          onClick={() => {
+            setIsProfileVisiable(!isProfileVisiable);
+          }}
+        >
+          <img
+            src={user?.profile}
+            className=" object-cover w-full h-full"
+            alt="Profile image"
+          />
+        </div>
+        {isProfileVisiable && <ProfileCard />}
+      </div>
+      {/* </div> */}
+
+      {/* <HamBurgerMenu handleMenuClick={handleMenuClick} /> */}
     </nav>
   );
 }

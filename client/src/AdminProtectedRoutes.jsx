@@ -23,7 +23,7 @@ async function Auth() {
 
 function AdminProtectedRoutes() {
   const [isAuth, setIsAuth] = useState(null);
-  const { setAdmin, setaccessToken } = useContext(BlogContext);
+  const { setAdmin, setAccessToken } = useContext(BlogContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,7 +41,7 @@ function AdminProtectedRoutes() {
         )
         .then((response) => {
           setAdmin(jwt_decode(response.data?.accessToken));
-          setaccessToken(response.data?.accessToken);
+          setAccessToken(response.data?.accessToken);
         });
     } catch (err) {
       generateError(err);

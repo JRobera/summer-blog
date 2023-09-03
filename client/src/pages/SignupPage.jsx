@@ -54,41 +54,56 @@ function SignupPage() {
       });
   };
   return (
-    <div className=" container mx-auto min-h-[100vh] flex flex-col gap-7 justify-center items-center">
-      <h1 className=" font-semibold text-xl">Signup</h1>
+    <div className=" w-full min-h-screen grid items-center">
       <form
-        className="w-11/12 mx-auto flex flex-col gap-2 sm:w-3/5 xl:w-2/5"
+        className="container mx-auto w-4/5 sm:w-3/5 md:w-1/2 xl:w-2/5 min-h-max flex flex-col justify-center gap-4 rounded-md bg-[#7395ae] shadow-md p-6"
         onSubmit={handleSubmit(submit)}
       >
-        <div className="flex flex-col">
-          {errors.user && <span>{errors.user.message}</span>}
+        <h1 className=" w-1/3 mx-auto font-bold text-xs sm:text-lg text-center">
+          Signup
+        </h1>
+
+        <div className="flex flex-col relative">
+          {errors.user && (
+            <span className="text-xs text-red-600 absolute -top-4 pl-2">
+              {errors.user.message}
+            </span>
+          )}
           <input
-            className="bg-[#7395ae] w-full rounded-lg p-2 outline-none placeholder:text-[#5c5d61]"
+            className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#7395ae] "
             type="text"
             placeholder="Enter user name"
             {...register("user")}
           />
         </div>
-        <div className="flex flex-col">
-          {errors.email && <span>{errors.email.message}</span>}
+        <div className="flex flex-col relative">
+          {errors.email && (
+            <span className="text-xs text-red-600 absolute -top-4 pl-2">
+              {errors.email.message}
+            </span>
+          )}
           <input
-            className="bg-[#7395ae] w-full rounded-lg p-2 outline-none placeholder:text-[#5c5d61]"
+            className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#7395ae] "
             type="email"
             placeholder="Enter email"
             {...register("email")}
           />
         </div>
-        <div className="flex flex-col">
-          {errors.password && <span>{errors.password.message}</span>}
+        <div className="flex flex-col relative">
+          {errors.password && (
+            <span className="text-xs text-red-600 absolute -top-4 pl-2">
+              {errors.password.message}
+            </span>
+          )}
           <input
-            className="bg-[#7395ae] w-full rounded-lg p-2 outline-none placeholder:text-[#5c5d61]"
+            className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#7395ae] "
             type="password"
             placeholder="Enter password"
             {...register("password")}
           />
         </div>
         <button
-          className="bg-[#7395ae] rounded-lg p-2 hover:text-[#557a95]"
+          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-xs sm:text-lg text-white hover:text-[#7395ae] "
           type="submit"
         >
           Signup

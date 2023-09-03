@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { generateError, generatesuccess } from "../../utility/Toasts";
-import { ToastContainer } from "react-toastify";
 import { BlogContext } from "../../context/BlogContext";
 import jwt_decode from "jwt-decode";
 
@@ -57,9 +56,9 @@ function AdminLogin() {
     <div className="w-full min-h-screen grid items-center">
       <form
         onSubmit={handleSubmit(submit)}
-        className="container mx-auto w-4/5 sm:w-3/5 md:w-1/2 lg:w-3/5 xl:w-2/5 min-h-max flex flex-col justify-center gap-4 rounded-md bg-[#7395ae] shadow-md p-6"
+        className="container mx-auto w-4/5 sm:w-3/5 md:w-1/2 xl:w-2/5 min-h-max flex flex-col justify-center gap-4 rounded-md bg-[#7395ae] shadow-md p-6"
       >
-        <p className="w-1/3 mx-auto font-bold text-xs sm:text-lg">
+        <p className="w-1/3 mx-auto font-bold text-xs sm:text-lg text-center">
           Admin login
         </p>
 
@@ -70,7 +69,7 @@ function AdminLogin() {
             </span>
           )}
           <input
-            className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#5c5d61]"
+            className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#7395ae]"
             type="text"
             placeholder="Enter user name"
             {...register("user")}
@@ -83,7 +82,7 @@ function AdminLogin() {
             </span>
           )}
           <input
-            className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#5c5d61] "
+            className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#7395ae] "
             type="text"
             placeholder="Enter password"
             {...register("password")}
@@ -91,12 +90,11 @@ function AdminLogin() {
         </div>
         <button
           type="submit"
-          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-xs sm:text-lg text-white hover:text-[#5c5d61] "
+          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-xs sm:text-lg text-white hover:text-[#7395ae] "
         >
           Log In
         </button>
       </form>
-      <ToastContainer />
     </div>
   );
 }

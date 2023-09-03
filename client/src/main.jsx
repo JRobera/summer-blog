@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import Context from "./context/BlogContext.jsx";
+import { ToastContainer } from "react-toastify";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -11,6 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Router>
         <App />
       </Router>
+      <ToastContainer />
     </Context>
   </React.StrictMode>
 );

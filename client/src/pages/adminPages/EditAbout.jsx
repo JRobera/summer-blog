@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { generateError, generatesuccess } from "../../utility/Toasts";
-import { ToastContainer } from "react-toastify";
 
 function EditAbout() {
   const [aboutText, setAboutText] = useState("");
@@ -39,11 +38,13 @@ function EditAbout() {
             setIsUploading(false);
           } else {
             generateError(response.data);
+            setSelectedFile("Select profile image");
             setIsUploading(false);
           }
         });
     } else {
       generateError("Invalid file formate!");
+      setSelectedFile("Select profile image");
       setIsUploading(false);
     }
   };
@@ -93,8 +94,6 @@ function EditAbout() {
           <span className=" animate-spin inline-block w-5 h-5 rounded-full border-white border-solid border-2 border-x-transparent"></span>
         </button>
       )}
-
-      <ToastContainer />
     </form>
   );
 }

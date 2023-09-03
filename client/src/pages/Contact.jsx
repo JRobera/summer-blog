@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { generateError, generatesuccess } from "../utility/Toasts";
-import { ToastContainer } from "react-toastify";
 
 function Contact() {
   const [isSending, setIsSending] = useState(false);
@@ -137,8 +136,6 @@ function Contact() {
           {isSending ? "Sending..." : "Send Message"}
         </button>
       </form>
-
-      <ToastContainer />
     </section>
   );
 }

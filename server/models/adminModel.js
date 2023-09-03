@@ -9,6 +9,7 @@ const AdminSchema = mongoose.Schema({
   public_id: { type: String },
   user: { type: String, required: true },
   password: { type: String, required: true },
+  article: { type: mongoose.Schema.Types.ObjectId, ref: "articles" },
   refreshToken: { type: String },
 });
 

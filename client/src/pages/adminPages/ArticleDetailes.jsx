@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import DeleteAlert from "./DeleteAlert";
 import axios from "axios";
@@ -12,6 +13,7 @@ function ArticleDetailes({
   like,
   view,
   dislikes,
+  getAllArticles,
 }) {
   const [alertVisible, setalertVisible] = useState(false);
   const handleClose = () => {
@@ -24,6 +26,7 @@ function ArticleDetailes({
       .then((response) => {
         if (response.status == 200) {
           generatesuccess(response.data);
+          getAllArticles();
         } else {
           generateError(response.data);
         }
@@ -33,21 +36,21 @@ function ArticleDetailes({
   return (
     <div className="bg-[#7396ae] rounded-lg h-max overflow-hidden relative">
       <div className="flex flex-col h-[150px] group overflow-hidden shadow-lg">
-        <img className="min-h-[150px]" src={thumbnail} alt="" />
-        <div className="text-center min-h-[150px] grid items-center group-hover:-translate-y-full duration-500 bg-gradient-to-t from-[#7396ae] to-transparent">
+        <img className="min-h-[150px] object-cover" src={thumbnail} alt="" />
+        <div className="text-center min-h-[150px] grid items-center justify-center group-hover:-translate-y-full duration-500 bg-gradient-to-t from-[#7396ae] to-transparent">
           <h1>{header}</h1>
-          <div className="flex">
+          <div className="flex gap-5 justify-center">
             <span
-              className="flex-1 justify-center items-center cursor-pointer"
+              className="justify-center items-center cursor-pointer"
               onClick={() => {
                 alert("edit");
               }}
               title="Edit Article"
             >
-              <box-icon name="edit" color="white"></box-icon>
+              <BiEdit size={24} />
             </span>
             <span
-              className="flex-1 justify-center items-center cursor-pointer"
+              className="justify-center items-center cursor-pointer"
               onClick={() => {
                 setalertVisible(!alertVisible);
               }}
@@ -65,9 +68,9 @@ function ArticleDetailes({
         />
       )}
       <div className="flex gap-4 justify-center p-2 text-center">
-        <p className="flex-1">Like {like}</p>
-        <p className="flex-1">View {view}</p>
-        <p className="flex-1">Dislike {dislikes}</p>
+        <p className="flex-1 break-all">Like {like}</p>
+        <p className="flex-1 break-all">View {view}</p>
+        <p className="flex-1 break-all">Dislike {dislikes}</p>
       </div>
     </div>
   );

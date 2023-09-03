@@ -4,7 +4,6 @@ import axios from "axios";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { useNavigate } from "react-router-dom";
 import { BlogContext } from "../../context/BlogContext";
-import { ToastContainer } from "react-toastify";
 
 function AdminHomePage() {
   const { admin, setAdmin, articles, setArticles } = useContext(BlogContext);
@@ -36,12 +35,16 @@ function AdminHomePage() {
     }
   };
 
-  useEffect(() => {
+  const getAllArticles = () => {
     axios.get("http://localhost:3007/get/articles").then((response) => {
       if (response.status == 200) {
         setArticles(response.data);
       }
     });
+  };
+
+  useEffect(() => {
+    getAllArticles();
   }, []);
 
   return (
@@ -59,7 +62,7 @@ function AdminHomePage() {
           onClick={() => {
             let input = document.createElement("input");
             input.type = "file";
-            input.accept = "image/*";
+            input.accept = "image/png, image/jpeg, image/jpg ";
             input.addEventListener("change", handleSelectCoverImage);
             input.click();
           }}
@@ -104,14 +107,14 @@ function AdminHomePage() {
               header={article?.header}
               thumbnail={article?.thumbnail}
               content={article?.content}
-              like={article?.likes}
+              like={article?.likes.length}
               view={article?.view}
-              dislikes={article?.disLikes}
+              dislikes={article?.disLikes.length}
+              getAllArticles={getAllArticles}
             />
           );
         })}
       </div>
-      <ToastContainer />
     </section>
   );
 }

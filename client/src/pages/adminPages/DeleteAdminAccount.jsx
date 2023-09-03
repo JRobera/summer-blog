@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 
 function DeleteAdminAccount() {
@@ -58,7 +57,6 @@ function DeleteAdminAccount() {
       >
         Delete Account
       </button>
-      <ToastContainer />
     </form>
   );
 }

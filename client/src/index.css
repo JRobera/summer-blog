@@ -31,3 +31,25 @@ body,
   background-color: #557a95;
   color: #fff;
 }
+
+.quill {
+  background-color: #7395ae;
+}
+
+.forgot-link:hover {
+  text-decoration-style: solid;
+}
+
+.ql-editor.ql-blank::before {
+  color: #557a95;
+  font-weight: bold;
+  height: 200px;
+}
+
+.ql-container.ql-snow {
+  height: 200px;
+}
+
+.hide {
+  overflow: hidden;
+}

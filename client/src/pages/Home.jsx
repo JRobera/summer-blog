@@ -7,7 +7,8 @@ import axios from "axios";
 import { BlogContext } from "../context/BlogContext";
 
 function Home() {
-  const { articles, setArticles } = useContext(BlogContext);
+  const { user, articles, setArticles } = useContext(BlogContext);
+  const [filteredArticles, setFilteredArticles] = useState(null);
   const [latestArticle, setLatestArticle] = useState();
 
   useEffect(() => {
@@ -21,12 +22,20 @@ function Home() {
         setArticles(response.data);
       }
     });
+
+    axios
+      .post("http://localhost:3007/filterd/articles", { id: user?._id })
+      .then((response) => {
+        if (response.status == 200) {
+          setFilteredArticles(response.data);
+        }
+      });
   }, []);
 
   return (
     <section id="home" className="w-full min-h-full p-2 relative">
       <NavBar />
-      <SearchArticle articles={articles} />
+      {/* <SearchArticle articles={articles} /> */}
       <div className="xl:w-4/5 container mx-auto mt-8 pt-6 border-t-[1px] border-t-[#7395ae]">
         <ArtPreview
           isLatest="true"
@@ -35,13 +44,13 @@ function Home() {
           title={latestArticle?.header}
           text={latestArticle?.content}
           view={latestArticle?.view}
-          like={latestArticle?.likes}
+          like={latestArticle?.likes.length}
         />
       </div>
       <div className="container mx-auto mt-8 border-t-[1px] border-t-[#7395ae] xl:w-4/5">
         <p className="my-2 text-sm text-gray-300 font-semibold">For you</p>
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
-          {articles?.map((article, i) => {
+          {filteredArticles?.map((article, i) => {
             return (
               <ArtPreview
                 key={i}
@@ -51,7 +60,7 @@ function Home() {
                 title={article?.header}
                 text={article?.content}
                 view={article?.view}
-                like={article?.likes}
+                like={article?.likes.length}
               />
             );
           })}
@@ -73,7 +82,7 @@ function Home() {
                 title={article?.header}
                 text={article?.content}
                 view={article?.view}
-                like={article?.likes}
+                like={article?.likes.length}
               />
             );
           })}
@@ -81,7 +90,7 @@ function Home() {
       </div>
 
       <a
-        href="#home"
+        href="#"
         className="sticky bottom-0 left-full bg-[#7396ae] p-2 text-center rounded-md"
       >
         <box-icon name="up-arrow-alt" color="#fff"></box-icon>

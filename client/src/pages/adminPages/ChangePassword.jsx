@@ -6,7 +6,6 @@ import * as yup from "yup";
 import axios from "axios";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { BlogContext } from "../../context/BlogContext";
-import { ToastContainer } from "react-toastify";
 
 function ChangePassword() {
   const { admin } = useContext(BlogContext);
@@ -98,7 +97,6 @@ function ChangePassword() {
       >
         Update password
       </button>
-      <ToastContainer />
     </form>
   );
 }

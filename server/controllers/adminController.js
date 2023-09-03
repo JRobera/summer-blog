@@ -237,45 +237,48 @@ const changeProfileBG = async (req, res) => {
   });
 };
 
-const publishArticle = async (req, res) => {
-  if (
-    req.file.mimetype == "image/png" ||
-    req.file.mimetype == "image/jpg" ||
-    req.file.mimetype == "image/jpeg"
-  ) {
-    try {
-      const data = await uploadToCloudinary(
-        req.file.path,
-        "article_image_folder"
-      );
+// const publishArticle = async (req, res) => {
+//   console.log(req.body);
+//   if (
+//     req.file.mimetype == "image/png" ||
+//     req.file.mimetype == "image/jpg" ||
+//     req.file.mimetype == "image/jpeg"
+//   ) {
+//     try {
+//       const data = await uploadToCloudinary(
+//         req.file.path,
+//         "article_image_folder"
+//       );
 
-      const article = new Article({
-        header: req.body.header,
-        thumbnail: data.url,
-        public_id: data.public_id,
-        content: req.body.article,
-      });
+//       const article = new Article({
+//         header: req.body.header,
+//         thumbnail: data.url,
+//         public_id: data.public_id,
+//         content: req.body.article,
+//         author: req.body.id,
+//       });
 
-      const saveThumbnail = await Article.updateOne(
-        {
-          _id: article._id,
-        },
-        {
-          $set: {
-            thumbnail: data.url,
-            public_id: data.public_id,
-          },
-        }
-      );
-      const saveArticle = await article.save();
-      res.status(200).json("Article published Successfully!");
-    } catch (error) {
-      res.status(400).json(error);
-    }
-  } else {
-    res.status(400).json("Invalid File Type");
-  }
-};
+//       const saveThumbnail = await Article.updateOne(
+//         {
+//           _id: article._id,
+//         },
+//         {
+//           $set: {
+//             thumbnail: data.url,
+//             public_id: data.public_id,
+//           },
+//         }
+//       );
+//       const saveArticle = await article.save();
+
+//       res.status(200).json("Article published Successfully!");
+//     } catch (error) {
+//       res.status(400).json(error);
+//     }
+//   } else {
+//     res.status(400).json("Invalid File Type");
+//   }
+// };
 
 const deleteArticle = (req, res) => {
   console.log(req.body);
@@ -297,6 +300,6 @@ module.exports = {
   deleteAccount,
   editAboutUs,
   changeProfileBG,
-  publishArticle,
+  // publishArticle,
   deleteArticle,
 };

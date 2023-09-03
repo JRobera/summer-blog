@@ -8,7 +8,7 @@ const {
   refreshAccessToken,
   editAboutUs,
   changeProfileBG,
-  publishArticle,
+  // publishArticle,
   deleteArticle,
 } = require("../controllers/adminController");
 const upload = require("../middleware/upload");
@@ -22,7 +22,7 @@ router.post("/update/password/:user", updatePassword);
 router.post("/delete/account", deleteAccount);
 router.post("/edit/about", upload.single("profile"), editAboutUs);
 router.post("/change-bg", upload.single("profile-bg"), changeProfileBG);
-router.post("/publish/article", upload.single("thumbnail"), publishArticle);
+// router.post("/publish/article", upload.single("thumbnail"), publishArticle);
 router.post("/delete/article", deleteArticle);
 
 module.exports = router;

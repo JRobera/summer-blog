@@ -4,17 +4,19 @@ import "react-quill/dist/quill.snow.css";
 import { modules, formats } from "../../assets/reactQuill";
 import axios from "axios";
 import { generateError, generatesuccess } from "../../utility/Toasts";
-import { ToastContainer } from "react-toastify";
 
 function ArticleEditor() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [value, setValue] = useState("");
   const [header, setHeader] = useState("");
   const [thumbnail, setThumbnail] = useState();
+  const [selectedFile, setSelectedFile] = useState("");
+  const [tag, setTag] = useState("DEFAULT");
 
   const handleThumbnail = (e) => {
     const file = e.target.files[0];
     setThumbnail(file);
+    setSelectedFile(file.name);
   };
 
   const handleSubmit = () => {
@@ -24,9 +26,11 @@ function ArticleEditor() {
     if (fileExtention !== "php") {
       formData.append("header", header);
       formData.append("thumbnail", thumbnail);
+      formData.append("tag", tag);
       formData.append("article", value);
+
       setIsPublishing(true);
-      if (header !== "" && value !== "") {
+      if (header !== "" && value !== "" && thumbnail !== "" && tag !== "") {
         axios
           .post("http://localhost:3007/publish/article", formData)
           .then((response) => {
@@ -35,16 +39,24 @@ function ArticleEditor() {
               setHeader("");
               setValue("");
               setIsPublishing(false);
+              setSelectedFile("Select profile image");
+              setTag("DEFAULT");
             } else {
               setIsPublishing(false);
               generateError(response.data);
+              setSelectedFile("Select profile image");
+              setTag("DEFAULT");
             }
           });
       } else {
-        generateError("Can not publish article with empty header or article!");
+        setIsPublishing(false);
+        generateError("All inputs required!");
       }
     } else {
+      setIsPublishing(false);
       generateError("Invalid file formate!");
+      setSelectedFile("Select profile image");
+      setTag("DEFAULT");
     }
   };
 
@@ -64,13 +76,14 @@ function ArticleEditor() {
             setHeader(e.target.value);
           }}
         ></textarea>
-        <div className=" flex justify-center mb-2 relative">
+        <div className=" flex gap-2 flex-col w-4/5 sm:w-3/5 mx-auto sm:flex-row justify-center mb-2 relative">
           <div className="relative">
             <label
               className=" absolute bg-[#7395ae] w-full h-full text-center hover:text-[#5d5c61] font-semibold p-1 rounded-md cursor-pointer"
               htmlFor="thumbnail"
             >
-              Select Thumbnail Image
+              {}
+              {selectedFile ? selectedFile : "Select Thumbnail Image"}
             </label>
             <input
               className=" text-center rounded-md"
@@ -80,23 +93,55 @@ function ArticleEditor() {
               onChange={handleThumbnail}
             />
           </div>
+
+          <select
+            className="bg-[#7395ae] outline-none rounded-md text-center p-2"
+            onChange={(e) => {
+              setTag(e.target.value);
+            }}
+            defaultValue={tag}
+          >
+            <option value="DEFAULT" disabled>
+              Choose Tag here
+            </option>
+            <option value="Web development">Web development</option>
+            <option value="Technology">Technology</option>
+            <option value="Travel">Travel</option>
+            <option value="Fashion and Style">Fashion and Style</option>
+            <option value="Arts and Crafts">Arts and Crafts</option>
+            <option value="Sports and Athletics">Sports and Athletics</option>
+            <option value="Entertainment and Pop Culture">
+              Entertainment and Pop Culture
+            </option>
+          </select>
         </div>
       </div>
       <ReactQuill
+        placeholder="Content goes here..."
         theme="snow"
         modules={modules}
         formats={formats}
         value={value}
         onChange={setValue}
       />
-      <button
-        type="submit"
-        onClick={handleSubmit}
-        className="hover:text-[#5c5d61] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute right-8 text-center "
-      >
-        {isPublishing ? "Publishing" : "Publish"}
-      </button>
-      <ToastContainer />
+      {isPublishing ? (
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center flex gap-4 items-center justify-center "
+        >
+          Publishing
+          <span className="animate-spin inline-block w-5 h-5 rounded-full border-white border-solid border-2 border-x-transparent"></span>
+        </button>
+      ) : (
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center "
+        >
+          Publish
+        </button>
+      )}
     </div>
   );
 }

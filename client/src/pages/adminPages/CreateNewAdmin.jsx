@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { generateError, generatesuccess } from "../../utility/Toasts";
-import { ToastContainer } from "react-toastify";
 
 function CreateNewAdmin() {
   const schema = yup.object().shape({
@@ -74,7 +73,6 @@ function CreateNewAdmin() {
       >
         Create Account
       </button>
-      <ToastContainer />
     </form>
   );
 }

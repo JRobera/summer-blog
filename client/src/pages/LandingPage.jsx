@@ -14,7 +14,7 @@ function LandingPage() {
           />
         </a>
         <div className="flex-1 text-right flex items-center justify-end gap-3">
-          <a href="/signin" className="hover:text-[#557a61]">
+          <a href="/signin" className="hover:text-[#557a95]">
             Login
           </a>
           <a
