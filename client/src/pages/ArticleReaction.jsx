@@ -10,7 +10,7 @@ import Comment from "../component/Comment";
 function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
   const { user } = useContext(BlogContext);
   const [newComment, setNewComment] = useState("");
-  // const [likeCount, setLikeCount] = useState(likes);
+  // const [commentLikeCount, setCommentLikeCount] = useState(likes);
   // const [disLikeCount, setDisLikeCount] = useState(disLikes);
   // const [commentCount, setCommentCount] = useState(comments?.length);
 
@@ -127,6 +127,7 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
           return (
             <Comment
               key={i}
+              id={comment?._id}
               comment={comment?.comment}
               author={comment?.commentAuthor}
               likes={comment?.likes?.length}

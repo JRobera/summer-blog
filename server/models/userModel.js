@@ -10,6 +10,8 @@ const UserSchema = mongoose.Schema(
       default:
         "https://res.cloudinary.com/dbv6hao81/image/upload/v1692969059/360_F_209370065_JLXhrc5inEmGl52SyvSPeVB23hB6IjrR_blqb4r.jpg",
     },
+    isVerified: { type: Boolean, default: false },
+    userToken: { type: String },
     interests: [{ type: String }],
     bookMarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "article" }],
     public_id: { type: String },

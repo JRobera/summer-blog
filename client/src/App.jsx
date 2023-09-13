@@ -16,6 +16,7 @@ import UserProtectedRoutes from "./UserProtectedRoutes";
 import SignupPage from "./pages/SignupPage";
 import WriteArticle from "./pages/WriteArticle";
 import ResetPassword from "./pages/ResetPassword";
+import UpdateArticle from "./pages/adminPages/UpdateArticle";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -42,9 +43,10 @@ function App() {
         <Route path="/login/admin/page" element={<AdminLogin />} />
         <Route element={<AdminProtectedRoutes />}>
           <Route
-            path="admin/page/main/dashboard"
+            path="/admin/page/main/dashboard"
             element={<AdminDashBoard />}
           />
+          <Route path="/update/article/:id" element={<UpdateArticle />} />
         </Route>
         {/* 404 */}
         <Route path="*" element={<PageNotFound />} />

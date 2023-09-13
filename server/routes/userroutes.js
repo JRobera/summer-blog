@@ -12,9 +12,13 @@ const {
   updateuserInfo,
   updateUserPassword,
   publishArticle,
+  deleteArticle,
+  updateArticle,
+  getArticleToUpdate,
   dislikeArticle,
   likeArticle,
   addComment,
+  likeComment,
   getFilterdArticle,
   addBookMark,
   forgotPassword,
@@ -25,6 +29,10 @@ const {
   changeProfileImage,
   getPublishedArticles,
   changePassword,
+  verifyUserEmail,
+  commentReply,
+  getCommentReplys,
+  getUserDataEdit,
 } = require("../controllers/userController");
 const upload = require("../middleware/upload");
 
@@ -32,6 +40,7 @@ const { sendMessage } = require("../controllers/contactUsController");
 
 const router = express.Router();
 
+router.get("/auth/email/:token", verifyUserEmail);
 router.post("/create/new-user", newUser);
 router.post("/login", userLogin);
 router.post("/user-refresh-token", refreshAccessToken);
@@ -48,17 +57,24 @@ router.post("/reset-password/:token/:id", setNewPassword);
 router.post("/change-password", changePassword);
 router.post("/update-user-info", updateuserInfo);
 router.post("/publish/article", upload.single("thumbnail"), publishArticle);
+router.post("/delete/article", deleteArticle);
+router.post("/update/article", upload.single("thumbnail"), updateArticle);
 router.post("/like", likeArticle);
 router.post("/dislike", dislikeArticle);
 router.post("/new-comment", addComment);
+router.post("/like/comment", likeComment);
+router.post("/add/comment/reply", commentReply);
+router.post("/get/reply", getCommentReplys);
 router.post("/add/bookmark", addBookMark);
 router.post("/get/my/book-marks", getBookMarks);
 router.post("/get/published-article", getPublishedArticles);
 
+router.get("/get/users/data/:id", getUserDataEdit);
 router.get("/get/latest", getLatestArticle);
 router.get("/get/articles", getArticles);
 router.get("/about/info", getAbout);
 router.get("/blog/:id", getArticle);
+router.get("/article/to-update/:id", getArticleToUpdate);
 
 router.get("/search", searchArticle);
 

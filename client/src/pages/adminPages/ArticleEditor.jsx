@@ -11,7 +11,7 @@ function ArticleEditor() {
   const [header, setHeader] = useState("");
   const [thumbnail, setThumbnail] = useState();
   const [selectedFile, setSelectedFile] = useState("");
-  const [tag, setTag] = useState("DEFAULT");
+  const [tag, setTag] = useState("Choose Tag here");
 
   const handleThumbnail = (e) => {
     const file = e.target.files[0];
@@ -64,7 +64,7 @@ function ArticleEditor() {
     // console.log(value);
   }, [value]);
   return (
-    <div className=" flex-1 h-screen overflow-y-scroll">
+    <div className=" flex-1 h-screen overflow-y-scroll relative">
       <div className="flex flex-col gap-2">
         <textarea
           name=""
@@ -101,7 +101,7 @@ function ArticleEditor() {
             }}
             defaultValue={tag}
           >
-            <option value="DEFAULT" disabled>
+            <option value={tag} disabled>
               Choose Tag here
             </option>
             <option value="Web development">Web development</option>

@@ -1,7 +1,39 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BiLike } from "react-icons/bi";
+import ReplyComment from "./ReplyComment";
+import axios from "axios";
+import { BlogContext } from "../context/BlogContext";
 
-function Comment({ comment, author, likes }) {
+function Comment({ id, comment, author, likes }) {
+  // const [showReply, setShowReply] = useState(false);
+  // const [replys, setReplys] = useState();
+  const [commentLike, setCommentLike] = useState(likes);
+  const { user } = useContext(BlogContext);
+
+  const handleCommentLike = () => {
+    axios
+      .post("http://localhost:3007/like/comment", { id: id, userid: user?._id })
+      .then((res) => {
+        if (res.data) {
+          setCommentLike(commentLike + 1);
+        } else {
+          setCommentLike(commentLike - 1);
+        }
+        // console.log(res.data);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:3007/get/reply", { commentid: id })
+      .then((res) => {
+        if (res) {
+          console.log(res.data);
+          // setReplys(res.data)
+        }
+      });
+  }, []);
+
   return (
     <div className="bg-[#7395ae] rounded-md p-2">
       <div className="flex gap-4">
@@ -18,13 +50,24 @@ function Comment({ comment, author, likes }) {
 
       <p className="text-sm">{comment}</p>
       <div className="flex justify-between mt-2">
-        <span className="flex gap-1 items-center hover:text-[#557a95]">
+        <span
+          className="flex gap-1 items-center hover:text-[#557a95]"
+          onClick={handleCommentLike}
+        >
           <BiLike size={24} />
-          <sub>{likes}</sub>
+          <sub>{commentLike}</sub>
         </span>
 
-        <button className="hover:text-[#557a95]">Reply</button>
+        {/* <button
+          className="hover:text-[#557a95]"
+          onClick={() => setShowReply(!showReply)}
+        >
+          Reply
+        </button> */}
       </div>
+      {/* {showReply && (
+        <ReplyComment commentid={id} author={author} comment={comment} />
+      )} */}
     </div>
   );
 }

@@ -61,7 +61,7 @@ function Blog() {
           src={article?.thumbnail}
           alt=""
         />
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-5">
           <img
             src={article?.author?.profile}
             className="w-10 max-h-10 rounded-full object-cover"

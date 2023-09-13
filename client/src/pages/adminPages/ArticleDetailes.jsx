@@ -4,6 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import DeleteAlert from "./DeleteAlert";
 import axios from "axios";
 import { generateError, generatesuccess } from "../../utility/Toasts";
+import { Link } from "react-router-dom";
 
 function ArticleDetailes({
   id,
@@ -40,15 +41,13 @@ function ArticleDetailes({
         <div className="text-center min-h-[150px] grid items-center justify-center group-hover:-translate-y-full duration-500 bg-gradient-to-t from-[#7396ae] to-transparent">
           <h1>{header}</h1>
           <div className="flex gap-5 justify-center">
-            <span
+            <Link
+              to={`/update/article/${id}`}
               className="justify-center items-center cursor-pointer"
-              onClick={() => {
-                alert("edit");
-              }}
               title="Edit Article"
             >
               <BiEdit size={24} />
-            </span>
+            </Link>
             <span
               className="justify-center items-center cursor-pointer"
               onClick={() => {

@@ -11,15 +11,19 @@ import jwt_decode from "jwt-decode";
 function SignupPage() {
   const { setUser, setAccessToken } = useContext(BlogContext);
   const schema = yup.object().shape({
-    user: yup.string().required("User name required"),
+    userName: yup.string().required("User name required"),
     email: yup
       .string("Must be string")
       .required("Email is required")
       .email("Invaid email"),
     password: yup
       .string()
-      .min(4, "Password must be more than 4 character")
-      .required("Password required"),
+      .required("Password required")
+      .min(6, "Password must be more than 6 character")
+      .matches(
+        /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%&_]).{6,}$/,
+        "Password must containe a letter, a number, and a special character !@#$%&_"
+      ),
   });
 
   const {
@@ -32,7 +36,7 @@ function SignupPage() {
   const history = useNavigate();
 
   const redirect = () => {
-    history("/home");
+    history("/");
   };
 
   const submit = (data) => {
@@ -42,8 +46,8 @@ function SignupPage() {
       })
       .then((res) => {
         if (res.status == 201) {
-          setUser(jwt_decode(res.data.accessToken));
-          setAccessToken(res.data.accessToken);
+          // setUser(jwt_decode(res.data.accessToken));
+          // setAccessToken(res.data.accessToken);
           generatesuccess(res.data);
           redirect();
           reset();
@@ -64,16 +68,16 @@ function SignupPage() {
         </h1>
 
         <div className="flex flex-col relative">
-          {errors.user && (
+          {errors.userName && (
             <span className="text-xs text-red-600 absolute -top-4 pl-2">
-              {errors.user.message}
+              {errors.userName.message}
             </span>
           )}
           <input
             className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#7395ae] "
             type="text"
             placeholder="Enter user name"
-            {...register("user")}
+            {...register("userName")}
           />
         </div>
         <div className="flex flex-col relative">

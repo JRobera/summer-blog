@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { TfiMore } from "react-icons/tfi";
 import { Link } from "react-router-dom";
+import PopUp from "./PopUp";
 
-function PublishedArticle({ _id, header, thumbnail, content, createdAt }) {
+function PublishedArticle({
+  _id,
+  header,
+  thumbnail,
+  content,
+  createdAt,
+  handleDelete,
+}) {
   const clearHtmlTags = (data) => {
     return data?.replace(/<[^>]+>/g, "");
   };
+  const [showPopUp, setShowPopUp] = useState(false);
 
   const postDate = new Date(createdAt);
   const formattedDate = postDate.toLocaleDateString("en-US", {
@@ -25,13 +34,19 @@ function PublishedArticle({ _id, header, thumbnail, content, createdAt }) {
       </Link>
 
       <div
-        className="absolute right-2 top-2 hover:text-[#557a95]"
+        className="absolute right-2 top-2 hover:cursor-pointer"
         //   onClick={handleUnBookMark}
       >
-        <TfiMore size={21} />
+        <TfiMore
+          size={21}
+          onClick={() => {
+            setShowPopUp(!showPopUp);
+          }}
+        />
+        {showPopUp && <PopUp id={_id} handleDelete={handleDelete} />}
       </div>
 
-      <div className="flex gap-10">
+      <div className="flex flex-col md:flex-row gap-10">
         <div className=" w-3/4">
           <Link to={"/blog/" + `${_id}`}>
             <h1 className="font-semibold text-lg">{header}</h1>
@@ -39,10 +54,10 @@ function PublishedArticle({ _id, header, thumbnail, content, createdAt }) {
           </Link>
         </div>
 
-        <div className=" w-1/4 overflow-y-hidden max-h-28 ">
+        <div className="w-full md:w-1/4 overflow-y-hidden max-h-28 ">
           <Link to={"/blog/" + `${_id}`}>
             <img
-              className=" object-cover"
+              className=" object-cover rounded-md w-full h-full"
               src={thumbnail}
               alt="Article thumbnail"
             />

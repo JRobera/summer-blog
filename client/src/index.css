@@ -17,6 +17,13 @@
   }
 }
 
+:root {
+  @apply bg-primary
+
+  /* --primary: #557a95
+  --secondary: #7395ae */;
+}
+
 :root,
 body,
 #root {
@@ -28,12 +35,29 @@ body,
 }
 
 #root {
-  background-color: #557a95;
+  background-color: var(--primary);
   color: #fff;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7395ae;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #557a97;
 }
 
 .quill {
-  background-color: #7395ae;
+  background-color: var(--secondary);
 }
 
 .forgot-link:hover {
@@ -41,13 +65,13 @@ body,
 }
 
 .ql-editor.ql-blank::before {
-  color: #557a95;
+  color: var(--primary);
   font-weight: bold;
   height: 200px;
 }
 
 .ql-container.ql-snow {
-  height: 200px;
+  min-height: 200px;
 }
 
 .hide {

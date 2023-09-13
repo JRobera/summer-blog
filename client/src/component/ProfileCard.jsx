@@ -36,7 +36,7 @@ function ProfileCard() {
   };
 
   return (
-    <div className="flex flex-col gap-2 bg-[#557a95] absolute top-16 p-4 rounded-md">
+    <div className="flex flex-col gap-2 bg-[#557a95] absolute top-16 p-4 rounded-md z-20">
       <Link
         to="/profile"
         className="hover:text-[#7395ae] flex gap-2 items-center"

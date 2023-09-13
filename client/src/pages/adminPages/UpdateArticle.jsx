@@ -1,20 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { modules, formats } from "../assets/reactQuill";
+import { modules, formats } from "../../assets/reactQuill";
 import axios from "axios";
-import { generateError, generatesuccess } from "../utility/Toasts";
-import { BlogContext } from "../context/BlogContext";
-import NavBar from "../component/nav_bar/NavBar";
+import { generateError, generatesuccess } from "../../utility/Toasts";
+import { useParams } from "react-router-dom";
+import { set } from "react-hook-form";
 
-function WriteArticle() {
-  const { user } = useContext(BlogContext);
-  const [isPublishing, setIsPublishing] = useState(false);
+function UpdateArticle() {
+  const [isUpdating, setIsUpdating] = useState(false);
   const [value, setValue] = useState("");
   const [header, setHeader] = useState("");
-  const [thumbnail, setThumbnail] = useState();
+  const [thumbnail, setThumbnail] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [tag, setTag] = useState("Choose Tag here");
+  const params = useParams();
+  const { id } = params;
 
   const handleThumbnail = (e) => {
     const file = e.target.files[0];
@@ -22,57 +23,70 @@ function WriteArticle() {
     setSelectedFile(file.name);
   };
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3007/article/to-update/${id}`)
+      .then((res) => {
+        const { header, thumbnail, tag, content } = res.data;
+        setHeader(header);
+        // setThumbnail(thumbnail);
+        setTag(tag);
+        setValue(content);
+      })
+      .catch((error) => {});
+  }, []);
+
   const handleSubmit = () => {
     const formData = new FormData();
-    const fileExtention = thumbnail?.name.split(".")[1];
-
-    if (fileExtention !== "php") {
-      formData.append("id", user?._id);
+    const fileExtention =
+      thumbnail !== null ? thumbnail.name.split(".")[1] : null;
+    if (fileExtention !== "php" || fileExtention == null) {
+      formData.append("id", id);
       formData.append("header", header);
       formData.append("thumbnail", thumbnail);
       formData.append("tag", tag);
       formData.append("article", value);
-      setIsPublishing(true);
+
+      setIsUpdating(true);
       if (header !== "" && value !== "" && thumbnail !== "" && tag !== "") {
         axios
-          .post("http://localhost:3007/publish/article", formData)
+          .post("http://localhost:3007/update/article", formData)
           .then((response) => {
             if (response.status == 200) {
               generatesuccess(response.data);
               setHeader("");
               setValue("");
-              setIsPublishing(false);
+              setIsUpdating(false);
               setSelectedFile("Select profile image");
-              setTag("DEFAULT");
+              setTag("Choose Tag here");
             } else {
-              setIsPublishing(false);
+              setIsUpdating(false);
               generateError(response.data);
               setSelectedFile("Select profile image");
-              setTag("DEFAULT");
+              setTag("Choose Tag here");
             }
           });
       } else {
-        setIsPublishing(false);
-        generateError("All inputs are required!");
+        setIsUpdating(false);
+        generateError("All inputs required!");
       }
     } else {
-      setIsPublishing(false);
+      setIsUpdating(false);
       generateError("Invalid file formate!");
       setSelectedFile("Select profile image");
-      setTag("DEFAULT");
+      setTag("Choose Tag here");
     }
   };
 
   return (
-    <div className=" flex-1 h-screen overflow-y-scroll p-2 relative">
-      <NavBar />
-      <div className="flex flex-col gap-2 mt-5">
+    <div className=" flex-1 h-screen overflow-y-scroll relative">
+      <div className="flex flex-col gap-2">
         <textarea
           name=""
           id=""
           value={header}
           placeholder="Header"
-          className="md:text-4xl text-lg font-semibold md:h-16 h-12 max-w-[1024px] w-4/5 mx-auto p-2 bg-[#7395ae] placeholder:text-[#557a95] border-2 border-[#5d5c61] outline-none resize-none rounded-lg "
+          className="md:text-4xl text-lg font-semibold md:h-16 h-12 p-2 bg-[#7395ae] border-2 border-[#5d5c61] outline-none resize-none rounded-lg "
           onChange={(e) => {
             setHeader(e.target.value);
           }}
@@ -80,9 +94,10 @@ function WriteArticle() {
         <div className=" flex gap-2 flex-col w-4/5 sm:w-3/5 mx-auto sm:flex-row justify-center mb-2 relative">
           <div className="relative">
             <label
-              className=" absolute bg-[#7395ae] w-full h-full text-center hover:text-[#557a95] font-semibold p-1 rounded-md cursor-pointer"
+              className=" absolute bg-[#7395ae] w-full h-full text-center hover:text-[#5d5c61] font-semibold p-1 rounded-md cursor-pointer"
               htmlFor="thumbnail"
             >
+              {}
               {selectedFile ? selectedFile : "Select Thumbnail Image"}
             </label>
             <input
@@ -93,17 +108,17 @@ function WriteArticle() {
               onChange={handleThumbnail}
             />
           </div>
+
           <select
             className="bg-[#7395ae] outline-none rounded-md text-center p-2"
             onChange={(e) => {
               setTag(e.target.value);
             }}
-            defaultValue={tag}
+            value={tag}
           >
-            <option value={tag} disabled hidden>
+            <option value="DEFAULT" disabled hidden>
               Choose Tag here
             </option>
-
             <option value="Web development">Web development</option>
             <option value="Technology">Technology</option>
             <option value="Travel">Travel</option>
@@ -124,11 +139,11 @@ function WriteArticle() {
         value={value}
         onChange={setValue}
       />
-      {isPublishing ? (
+      {isUpdating ? (
         <button
           type="submit"
           onClick={handleSubmit}
-          className="hover:text-[#5c5d61] bg-[#7396ae] w-48 sm:w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center flex gap-4 items-center justify-center "
+          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center flex gap-4 items-center justify-center "
         >
           Publishing
           <span className="animate-spin inline-block w-5 h-5 rounded-full border-white border-solid border-2 border-x-transparent"></span>
@@ -137,7 +152,7 @@ function WriteArticle() {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="hover:text-[#557a95] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center "
+          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center "
         >
           Publish
         </button>
@@ -146,4 +161,4 @@ function WriteArticle() {
   );
 }
 
-export default WriteArticle;
+export default UpdateArticle;

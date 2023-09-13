@@ -44,7 +44,7 @@ function ArtPreview({ thumbnail, id, title, text, view, like, isLatest }) {
         }
       >
         <span
-          className="absolute top-2 right-2 z-20 text-[#7395ae] hover:text-[#557a95] text-md"
+          className="absolute top-2 right-2 z-10 text-[#7395ae] hover:text-[#557a95] text-md"
           title="Add to BookMark"
           onClick={handleBookMark}
         >

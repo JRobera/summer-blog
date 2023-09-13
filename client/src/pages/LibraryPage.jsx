@@ -68,7 +68,7 @@ function LibraryPage() {
 
   useEffect(() => {
     handleGetBookMarks();
-  }, [bookMarks]);
+  }, []);
 
   useEffect(() => {
     if (isEditVisiable || isChangePasswordVisiable) {
@@ -79,31 +79,35 @@ function LibraryPage() {
   }, [isEditVisiable, isChangePasswordVisiable]);
 
   return (
-    <div className="p-2">
+    <div className="p-2 min-h-screen">
       <NavBar />
-      <div className="flex pt-4 gap-2">
+      <div className="flex pt-4 gap-2 h-full flex-col-reverse md:flex-row">
         <div className="no-scrollbar flex-[2] flex flex-col gap-2 max-h-screen overflow-y-scroll">
-          {bookMarks?.map((bookMark) => {
-            return (
-              <BookMarkItem
-                key={bookMark?._id}
-                _id={bookMark?._id}
-                userId={user?._id}
-                user={bookMark?.author}
-                profile={bookMark?.author?.profile}
-                header={bookMark?.header}
-                thumbnail={bookMark?.thumbnail}
-                content={bookMark?.content}
-                createdAt={bookMark?.createdAt}
-                handleDelete={handleDelete}
-              />
-            );
-          })}
+          {bookMarks == undefined ? (
+            <p>No bookmark Yet</p>
+          ) : (
+            bookMarks?.map((bookMark) => {
+              return (
+                <BookMarkItem
+                  key={bookMark?._id}
+                  _id={bookMark?._id}
+                  userId={user?._id}
+                  user={bookMark?.author}
+                  profile={bookMark?.author?.profile}
+                  header={bookMark?.header}
+                  thumbnail={bookMark?.thumbnail}
+                  content={bookMark?.content}
+                  createdAt={bookMark?.createdAt}
+                  handleDelete={handleDelete}
+                />
+              );
+            })
+          )}
           {/* <BookMarkItem />
           <BookMarkItem /> */}
         </div>
-        <div className="bg-[#7395ae] flex-1 pl-10 pt-10 rounded-md">
-          <div>
+        <div className="bg-[#7395ae] flex-1 pl-10 pt-10 pb-1 rounded-md">
+          <div className="flex gap-2 items-center md:block">
             <div className="relative">
               <img
                 className="w-20 h-20 max-h-20 rounded-full border-2 object-cover "

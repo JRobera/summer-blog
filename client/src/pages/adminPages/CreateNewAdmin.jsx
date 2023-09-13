@@ -11,7 +11,11 @@ function CreateNewAdmin() {
     password: yup
       .string()
       .required("Password required")
-      .min(4, "Password must be grater than four"),
+      .min(6, "Password must be more than 6 character")
+      .matches(
+        /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%&_]).{6,}$/,
+        "Password must containe a letter, a number, and a special character !@#$%&_"
+      ),
   });
   const {
     register,

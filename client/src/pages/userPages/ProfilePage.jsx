@@ -46,6 +46,7 @@ function ProfilePage() {
     }
   };
 
+  // hide body scroll bar during profile edit
   useEffect(() => {
     if (isEditVisiable || isChangePasswordVisiable) {
       document.body.classList.add("hide");
@@ -70,10 +71,28 @@ function ProfilePage() {
       });
   }, []);
 
+  const handleDelete = (id) => {
+    setPublishedArticles(
+      publishedArticles?.filter((article) => {
+        return article?._id !== id;
+      })
+    );
+    axios
+      .post("http://localhost:3007/delete/article", { id: id })
+      .then((res) => {
+        if (res.status == 200) {
+          generatesuccess(res.data);
+        }
+      })
+      .catch((err) => {
+        generateError(err.message);
+      });
+  };
+
   return (
     <div className=" px-2 relative">
       <NavBar />
-      <div className="flex gap-2 min-h-screen mt-2 pt-4">
+      <div className="flex gap-2 min-h-screen mt-2 pt-4 relative flex-col-reverse md:flex-row">
         <div className="flex-[2] bg-[#7395ae] rounded-md">
           <UserTabs />
           <div className="no-scrollbar max-h-screen overflow-y-scroll">
@@ -86,13 +105,14 @@ function ProfilePage() {
                   thumbnail={article?.thumbnail}
                   content={article?.content}
                   createdAt={article?.createdAt}
+                  handleDelete={handleDelete}
                 />
               );
             })}
           </div>
         </div>
-        <div className="bg-[#7395ae] flex-1 pl-10 pt-10 rounded-md">
-          <div>
+        <div className="bg-secondry flex-1 p-5 md:pl-10 md:pt-10 rounded-md">
+          <div className="flex gap-2 items-center md:block">
             <div className="relative">
               <img
                 className="w-20 h-20 max-h-20 rounded-full border-2 object-cover "

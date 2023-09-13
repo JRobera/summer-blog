@@ -281,7 +281,6 @@ const changeProfileBG = async (req, res) => {
 // };
 
 const deleteArticle = (req, res) => {
-  console.log(req.body);
   Article.findOneAndDelete({ _id: req.body.id }).then((response) => {
     if (response) {
       res.status(200).json("Article Deleted Successfuly");

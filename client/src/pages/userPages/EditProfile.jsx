@@ -25,7 +25,6 @@ function EditProfile({ handleEditClick }) {
       if (checked) {
         return [...prevTags, value];
       } else {
-        console.log(prevTags);
         return prevTags.filter((tag) => tag !== value);
       }
     });
@@ -59,9 +58,14 @@ function EditProfile({ handleEditClick }) {
       });
   };
 
-  // useEffect(() => {
-  //   console.log(selectedTags);
-  // }, [selectedTags]);
+  useEffect(() => {
+    // console.log(selectedTags);
+    axios
+      .get(`http://localhost:3007/get/users/data/${user?._id}`)
+      .then((res) => {
+        setSelectedTags(res.data.interests);
+      });
+  }, []);
 
   const tags = [
     {
@@ -123,8 +127,10 @@ function EditProfile({ handleEditClick }) {
                 <input
                   type="checkbox"
                   id={tag.id}
+                  checked={selectedTags.includes(tag.tag)}
+                  selected={true}
                   value={tag.tag}
-                  className="outline-none accent-[#557a95]"
+                  className="outline-none accent-[#e2eaf1] border-2"
                   onChange={handleTagChange}
                 />
                 <label htmlFor={tag.id}>{tag.tag}</label>

@@ -7,10 +7,41 @@ const { logOut } = require("./adminController");
 const { verifyPayment } = require("../services/verifyPayment");
 
 const newUser = (req, res) => {
-  const { user, email, password } = req.body;
+  const { userName, email, password } = req.body;
 
   User.findOne({ email: email }).then((response) => {
     if (!response) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.NODEMAILERUSER,
+          pass: process.env.NODEMAILERPASS,
+        },
+      });
+
+      const secret = process.env.ACCESS_TOKEN_SECRET + email;
+      const user = { email: email, user: userName };
+      const token = jwt.sign(user, secret, { expiresIn: "15m" });
+      const verifyLink = `http://localhost:3007/auth/email/${token}`;
+
+      const mailerOption = {
+        from: process.env.NODEMAILERUSER,
+        to: email,
+        subject: "Confirm email",
+        html: `<p>Please verify you email by Clicking <strong><a href="${verifyLink}">here</a></strong>`,
+      };
+      try {
+        transporter.sendMail(mailerOption, (error, info) => {
+          if (error) {
+            res.json(error);
+          } else {
+            res.json("Check your email for verification");
+          }
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
+
       bcrypt.genSalt(10, (err, salt) => {
         if (err) {
           throw err;
@@ -20,48 +51,48 @@ const newUser = (req, res) => {
             throw err;
           } else {
             User.create({
-              user: user,
+              user: userName,
               email: email,
               password: hash,
+              userToken: token,
             }).then((response) => {
-              const payload = {
-                _id: response._id,
-                user: response.user,
-                email: response.email,
-                profile: response.profile,
-              }; // referst to the data that will be stored in cookie
+              // const payload = {
+              //   _id: response._id,
+              //   user: response.user,
+              //   email: response.email,
+              //   profile: response.profile,
+              // };
+              // referst to the data that will be stored in cookie
 
-              const accessToken = jwt.sign(
-                payload,
-                process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: "15m" }
-              );
-              const refreshToken = jwt.sign(
-                payload,
-                process.env.REFRESH_TOKEN_SECRET,
-                { expiresIn: "1d" }
-              );
+              // const accessToken = jwt.sign(
+              //   payload,
+              //   process.env.ACCESS_TOKEN_SECRET,
+              //   { expiresIn: "15m" }
+              // );
+              // const refreshToken = jwt.sign(
+              //   payload,
+              //   process.env.REFRESH_TOKEN_SECRET,
+              //   { expiresIn: "1d" }
+              // );
 
-              User.updateOne(
-                { _id: response._id },
-                { refreshToken: refreshToken }
-              ).then((response) => {
-                if (!response) {
-                  console.log("Something went wrong");
-                }
-              });
+              // User.updateOne(
+              //   { _id: response._id },
+              //   { refreshToken: refreshToken }
+              // ).then((response) => {
+              //   if (!response) {
+              //     console.log("Something went wrong");
+              //   }
+              // });
 
-              res.cookie("ujwt", refreshToken, {
-                withCredentials: true,
-                secure: true,
-                sameSite: "none",
-                httpOnly: true,
-              });
+              // res.cookie("ujwt", refreshToken, {
+              //   withCredentials: true,
+              //   secure: true,
+              //   sameSite: "none",
+              //   httpOnly: true,
+              // });
 
-              res
-                .status(201)
-                .json({ accessToken: accessToken, refreshToken: refreshToken });
-            });
+              res.status(201).json("Check your email for varification link");
+            }); // then ends
           }
         });
       });
@@ -71,58 +102,90 @@ const newUser = (req, res) => {
   });
 };
 
+const verifyUserEmail = (req, res) => {
+  const { token } = req.params;
+
+  User.findOne({ userToken: token })
+    .then((response) => {
+      if (response) {
+        const secret = process.env.ACCESS_TOKEN_SECRET + response.email;
+        try {
+          jwt.verify(token, secret, async (err, user) => {
+            if (err) return res.sendStatus(403).json("Invalid token");
+            const updateUser = await User.updateOne(
+              { _id: response._id },
+              { isVerified: true, userToken: "" }
+            );
+            res.redirect(`http://localhost:5173/signin`);
+          });
+        } catch (error) {
+          res.json(error.message);
+        }
+      } else {
+        res.json("Invalid user");
+      }
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
 const userLogin = (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email: email }).then((response) => {
     if (response) {
-      bcrypt.compare(password, response.password, (err, result) => {
-        if (result) {
-          const payload = {
-            _id: response._id,
-            user: response.user,
-            email: response.email,
-            profile: response.profile,
-          };
+      if (response.isVerified) {
+        bcrypt.compare(password, response.password, (err, result) => {
+          if (result) {
+            const payload = {
+              _id: response._id,
+              user: response.user,
+              email: response.email,
+              profile: response.profile,
+            };
 
-          const accessToken = jwt.sign(
-            payload,
-            process.env.ACCESS_TOKEN_SECRET,
-            {
-              expiresIn: "15m",
-            }
-          );
-          const refreshToken = jwt.sign(
-            payload,
-            process.env.REFRESH_TOKEN_SECRET,
-            {
-              expiresIn: "1d",
-            }
-          );
+            const accessToken = jwt.sign(
+              payload,
+              process.env.ACCESS_TOKEN_SECRET,
+              {
+                expiresIn: "15m",
+              }
+            );
+            const refreshToken = jwt.sign(
+              payload,
+              process.env.REFRESH_TOKEN_SECRET,
+              {
+                expiresIn: "3d",
+              }
+            );
 
-          User.updateOne(
-            { email: response.email },
-            { refreshToken: refreshToken }
-          ).then((respons) => {
-            if (!response) {
-              res.json("Sorry Error");
-            }
-          });
+            User.updateOne(
+              { email: response.email },
+              { refreshToken: refreshToken }
+            ).then((respons) => {
+              if (!response) {
+                res.json("Sorry Error");
+              }
+            });
 
-          res.cookie("ujwt", refreshToken, {
-            withCredentials: true,
-            secure: true,
-            sameSite: "none",
-            httpOnly: true,
-          });
-          res
-            .status(200)
-            .json({ accessToken: accessToken, refreshToken: refreshToken });
-        } else {
-          res.status(203).json("Incorrect Password");
-        }
-      });
+            res.cookie("ujwt", refreshToken, {
+              withCredentials: true,
+              secure: true,
+              sameSite: "none",
+              httpOnly: true,
+            });
+            res
+              .status(200)
+              .json({ accessToken: accessToken, refreshToken: refreshToken });
+          } else {
+            res.status(203).json("Incorrect Password!");
+          }
+        });
+      } else {
+        res.status(203).json("Invalid Accounte!");
+      }
     } else {
-      res.status(203).json("User does not existe!");
+      res.status(203).json("User does not exist!");
     }
   });
 };
@@ -385,6 +448,115 @@ const publishArticle = async (req, res) => {
   }
 };
 
+const deleteArticle = (req, res) => {
+  Article.findOneAndDelete({ _id: req.body.id }).then((response) => {
+    if (response) {
+      res.status(200).json("Article Deleted Successfuly");
+    } else {
+      res.json("Error!");
+    }
+  });
+};
+
+// get article to update
+const getArticleToUpdate = (req, res) => {
+  const id = req.params?.id;
+  Article.findOne({ _id: id })
+    .select("header thumbnail tag content ")
+    .then((response) => {
+      if (response) {
+        res.status(200).json(response);
+      }
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+};
+
+const updateArticle = async (req, res) => {
+  // console.log(req.body);
+  if (req.body.thumbnail == "null") {
+    try {
+      const updatedArticle = await Article.updateOne(
+        {
+          _id: req.body.id,
+        },
+        {
+          header: req.body.header,
+          tag: req.body.tag,
+          content: req.body.article,
+        }
+      );
+      console.log(updatedArticle);
+      res.status(200).json("Article updated!");
+    } catch (error) {
+      res.status(400).json(error.message);
+    }
+  } else {
+    if (
+      req.file.mimetype == "image/png" ||
+      req.file.mimetype == "image/jpg" ||
+      req.file.mimetype == "image/jpeg"
+    ) {
+      try {
+        const data = await uploadToCloudinary(
+          req.file.path,
+          "article_image_folder"
+        );
+
+        const updatedArticle = await Article.updateOne(
+          {
+            _id: req.body.id,
+          },
+          {
+            header: req.body.header,
+            thumbnail: data.url,
+            public_id: data.public_id,
+            tag: req.body.tag,
+            content: req.body.article,
+          }
+        );
+        console.log(updatedArticle);
+        res.status(200).json("Article updated!");
+      } catch (error) {
+        res.status(400).json(error.message);
+      }
+    } else {
+      res.status(400).json("Invalid File Type");
+    }
+  }
+  // if (
+  //   req.file.mimetype == "image/png" ||
+  //   req.file.mimetype == "image/jpg" ||
+  //   req.file.mimetype == "image/jpeg"
+  // ) {
+  // try {
+  // const data = await uploadToCloudinary(
+  //   req.file.path,
+  //   "article_image_folder"
+  // );
+
+  // const updatedArticle = await Article.updateOne(
+  //   {
+  //     _id: req.body.id,
+  //   },
+  //   {
+  //     header: req.body.header,
+  // thumbnail: data.url,
+  // public_id: data.public_id,
+  //     tag: req.body.tag,
+  //     content: req.body.article,
+  //   }
+  // );
+  //   console.log(updatedArticle);
+  // } catch (error) {
+  //   res.status(400).json(error.message);
+  // }
+  // } else {
+  //   res.status(400).json("Invalid File Type");
+  // }
+};
+
 const likeArticle = async (req, res) => {
   const { id, userid } = req.body;
   // console.log(req.body);
@@ -487,6 +659,39 @@ const addComment = async (req, res) => {
   res.status(201).json("Comment have been Added");
 };
 
+const likeComment = async (req, res) => {
+  const { id, userid } = req.body;
+
+  const commentLike = await Comment.findOne({ _id: id }).select("likes");
+  if (commentLike?.likes.includes(userid)) {
+    const comment = await Comment.updateOne(
+      { _id: id },
+      { $pull: { likes: userid } }
+    );
+    res.json(false);
+  } else {
+    const comment = await Comment.updateOne(
+      { _id: id },
+      { $push: { likes: userid } }
+    );
+    res.status(200).json(true);
+  }
+};
+
+const commentReply = async (req, res) => {
+  const { commentid, userid, reply, comment } = req.body;
+  const commentReply = await Comment.create({
+    comment: reply,
+    commentAuthor: userid,
+  });
+  if (commentReply) {
+    const comment = await Comment.updateOne(
+      { _id: commentid },
+      { $push: { comments: commentid } }
+    );
+  }
+};
+
 const getLatestArticle = (req, res) => {
   Article.findOne({})
     .sort({ $natural: -1 })
@@ -515,6 +720,18 @@ const searchArticle = (req, res) => {
   });
 };
 
+const getUserDataEdit = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userData = await User.findOne({ _id: id }).select(
+      "user interests -_id"
+    );
+    res.json(userData);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const getAbout = (req, res) => {
   About.findOne({}).then((response) => {
     res.json(response);
@@ -527,7 +744,9 @@ const getArticle = (req, res) => {
   // const id = AES.decrypt(req.params?.id, process.env.SECRET_KEY).toString(enc.Utf8);
   try {
     Article.findOne({ _id: id })
-      .select("author content disLikes likes comments header createdAt")
+      .select(
+        "author thumbnail content disLikes likes comments header createdAt"
+      )
       .populate({ path: "author", select: "user profile" })
       .populate({
         path: "comments",
@@ -543,6 +762,14 @@ const getArticle = (req, res) => {
   } catch (err) {
     res.json(err);
   }
+};
+
+const getCommentReplys = async (req, res) => {
+  // console.log(req.body);
+  const { commentid } = req.body;
+  const reply = await Comment.findOne({ _id: commentid }).select("comments");
+  // .populate({ path: "comments"});
+  console.log(reply);
 };
 
 const getPublishedArticles = async (req, res) => {
@@ -637,6 +864,7 @@ const paymentCallback = async (req, res) => {
 };
 
 module.exports = {
+  verifyUserEmail,
   newUser,
   userLogin,
   refreshAccessToken,
@@ -649,14 +877,21 @@ module.exports = {
   changePassword,
   updateuserInfo,
   publishArticle,
+  deleteArticle,
+  updateArticle,
+  getArticleToUpdate,
   likeArticle,
   dislikeArticle,
   addComment,
+  likeComment,
+  commentReply,
   getLatestArticle,
   getArticles,
   getArticle,
+  getCommentReplys,
   getPublishedArticles,
   searchArticle,
+  getUserDataEdit,
   getAbout,
   getFilterdArticle,
   addBookMark,

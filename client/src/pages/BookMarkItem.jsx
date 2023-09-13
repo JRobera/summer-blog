@@ -65,7 +65,7 @@ function BookMarkItem({
         <BiBookmarkMinus size={21} />
       </div>
 
-      <div className="flex gap-10">
+      <div className="flex flex-col md:flex-row gap-10 ">
         <div className=" w-3/4">
           <Link to={"/blog/" + `${_id}`}>
             <h1 className="font-semibold text-lg">{header}</h1>
@@ -73,10 +73,10 @@ function BookMarkItem({
           </Link>
         </div>
 
-        <div className=" w-1/4 overflow-y-hidden max-h-28 ">
+        <div className="w-full md:w-1/4 overflow-y-hidden max-h-28 ">
           <Link to={"/blog/" + `${_id}`}>
             <img
-              className=" object-cover"
+              className=" object-cover rounded-md w-full h-full"
               src={thumbnail}
               alt="Article thumbnail"
             />
