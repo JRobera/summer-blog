@@ -29,7 +29,7 @@ function EditAbout() {
       formdata.append("text", aboutText);
 
       axios
-        .post("https://summer-blog-api.onrender.comedit/about", formdata)
+        .post("https://summer-blog-api.onrender.com/edit/about", formdata)
         .then((response) => {
           if (response.status == 200) {
             generatesuccess(response.data);

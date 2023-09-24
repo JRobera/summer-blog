@@ -15,7 +15,7 @@ function ArtPreview({ thumbnail, id, title, text, view, like, isLatest }) {
 
   const handleBookMark = () => {
     axios
-      .post("https://summer-blog-api.onrender.comadd/bookmark", {
+      .post("https://summer-blog-api.onrender.com/add/bookmark", {
         articleid: id,
         id: user?._id,
       })

@@ -24,7 +24,7 @@ function BookMarkItem() {
 
   const handleGetBookMarks = () => {
     axios
-      .post("https://summer-blog-api.onrender.comget/my/book-marks", {
+      .post("https://summer-blog-api.onrender.com/get/my/book-marks", {
         userId: user?._id,
       })
       .then((res) => {
@@ -51,7 +51,7 @@ function BookMarkItem() {
 
   const handleUnBookMark = (_id) => {
     axios
-      .post("https://summer-blog-api.onrender.comadd/bookmark", {
+      .post("https://summer-blog-api.onrender.com/add/bookmark", {
         articleid: _id,
         id: user?._id,
       })

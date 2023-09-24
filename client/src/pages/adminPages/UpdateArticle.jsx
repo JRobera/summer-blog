@@ -26,7 +26,7 @@ function UpdateArticle() {
 
   useEffect(() => {
     axios
-      .get(`https://summer-blog-api.onrender.comarticle/to-update/${id}`)
+      .get(`https://summer-blog-api.onrender.com/article/to-update/${id}`)
       .then((res) => {
         const { header, tag, content } = res.data;
         setHeader(header);
@@ -50,7 +50,7 @@ function UpdateArticle() {
       setIsUpdating(true);
       if (header !== "" && value !== "" && thumbnail !== "" && tag !== "") {
         axios
-          .post("https://summer-blog-api.onrender.comupdate/article", formData)
+          .post("https://summer-blog-api.onrender.com/update/article", formData)
           .then((response) => {
             if (response.status == 200) {
               generatesuccess(response.data);

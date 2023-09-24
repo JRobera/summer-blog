@@ -34,7 +34,7 @@ function EditProfile({ handleEditClick }) {
     e.preventDefault();
 
     axios
-      .post("https://summer-blog-api.onrender.comupdate-user-info", {
+      .post("https://summer-blog-api.onrender.com/update-user-info", {
         id: user._id,
         name: userName,
         tags: selectedTags,
@@ -61,7 +61,7 @@ function EditProfile({ handleEditClick }) {
   useEffect(() => {
     // console.log(selectedTags);
     axios
-      .get(`https://summer-blog-api.onrender.comget/users/data/${user?._id}`)
+      .get(`https://summer-blog-api.onrender.com/get/users/data/${user?._id}`)
       .then((res) => {
         setSelectedTags(res.data.interests);
       });

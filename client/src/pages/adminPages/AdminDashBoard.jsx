@@ -16,7 +16,7 @@ function AdminDashBoard() {
   const refreshToken = () => {
     axios
       .post(
-        "https://summer-blog-api.onrender.comrefresh-token",
+        "https://summer-blog-api.onrender.com/refresh-token",
         {},
         { withCredentials: true }
       )

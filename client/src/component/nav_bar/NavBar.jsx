@@ -20,7 +20,7 @@ function NavBar() {
 
   useEffect(() => {
     axios
-      .get("https://summer-blog-api.onrender.comget/articles")
+      .get("https://summer-blog-api.onrender.com/get/articles")
       .then((response) => {
         if (response.status == 200) {
           setArticles(response.data);
@@ -40,7 +40,7 @@ function NavBar() {
   const handleLogout = () => {
     axios
       .post(
-        "https://summer-blog-api.onrender.comlogout",
+        "https://summer-blog-api.onrender.com/logout",
         {},
         {
           withCredentials: true,

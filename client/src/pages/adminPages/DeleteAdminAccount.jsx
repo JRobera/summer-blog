@@ -21,7 +21,7 @@ function DeleteAdminAccount() {
     <form
       onSubmit={handleSubmit((data) => {
         axios
-          .post("https://summer-blog-api.onrender.comdelete/account", data)
+          .post("https://summer-blog-api.onrender.com/delete/account", data)
           .then((response) => {
             if (response.status == 200) {
               generatesuccess(response.data);

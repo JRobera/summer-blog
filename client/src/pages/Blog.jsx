@@ -18,7 +18,7 @@ function Blog() {
   const { id } = params;
 
   const handleRefresh = () => {
-    axios.get(`https://summer-blog-api.onrender.comblog/${id}`).then((res) => {
+    axios.get(`https://summer-blog-api.onrender.com/blog/${id}`).then((res) => {
       if (res.status == 200) {
         setArticle(res.data);
       } else {

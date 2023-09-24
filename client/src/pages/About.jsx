@@ -7,7 +7,7 @@ function About() {
 
   useEffect(() => {
     axios
-      .get("https://summer-blog-api.onrender.comabout/info")
+      .get("https://summer-blog-api.onrender.com/about/info")
       .then((response) => {
         setAbout(response.data);
       });

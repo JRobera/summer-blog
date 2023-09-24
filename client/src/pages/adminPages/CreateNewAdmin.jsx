@@ -29,7 +29,7 @@ function CreateNewAdmin() {
       onSubmit={handleSubmit((data) => {
         if (data !== null) {
           axios
-            .post("https://summer-blog-api.onrender.comnew-admin", data)
+            .post("https://summer-blog-api.onrender.com/new-admin", data)
             .then((response) => {
               if (response.status == 201) {
                 generatesuccess(response.data);

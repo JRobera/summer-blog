@@ -23,7 +23,7 @@ function ArticleDetailes({
 
   const handleDeleteArticle = () => {
     axios
-      .post("https://summer-blog-api.onrender.comdelete/article", { id })
+      .post("https://summer-blog-api.onrender.com/delete/article", { id })
       .then((response) => {
         if (response.status == 200) {
           generatesuccess(response.data);

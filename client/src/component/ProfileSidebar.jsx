@@ -14,7 +14,7 @@ function ProfileSidebar({ handleEditClick, handleChangeClick }) {
       formData.append("id", user?._id);
       axios
         .post(
-          "https://summer-blog-api.onrender.comchange-profile-image",
+          "https://summer-blog-api.onrender.com/change-profile-image",
           formData
         )
         .then((res) => {

@@ -31,7 +31,7 @@ function ChangePassword({ handleChangeClick }) {
 
   const submit = (data) => {
     axios
-      .post("https://summer-blog-api.onrender.comchange-password", {
+      .post("https://summer-blog-api.onrender.com/change-password", {
         id: user?._id,
         ...data,
       })

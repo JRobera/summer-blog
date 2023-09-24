@@ -45,7 +45,7 @@ function SigninPage() {
   const submit = (data) => {
     if (attemptCount < 3) {
       axios
-        .post("https://summer-blog-api.onrender.comlogin", data, {
+        .post("https://summer-blog-api.onrender.com/login", data, {
           withCredentials: true,
         })
         .then((response) => {

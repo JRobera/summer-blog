@@ -30,12 +30,12 @@ function Pay({ fname, lname, email, amount }) {
       <input
         type="hidden"
         name="callback_url"
-        value={`https://summer-blog-api.onrender.compayment-callback?tx_ref=${tx_ref}`}
+        value={`https://summer-blog-api.onrender.com/payment-callback?tx_ref=${tx_ref}`}
       />
       <input
         type="hidden"
         name="return_url"
-        value={`https://summer-blog-api.onrender.compayment-callback?tx_ref=${tx_ref}`}
+        value={`https://summer-blog-api.onrender.com/payment-callback?tx_ref=${tx_ref}`}
       />
       <input type="hidden" name="meta[title]" value="test" />
       <button

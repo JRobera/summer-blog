@@ -13,14 +13,14 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("https://summer-blog-api.onrender.comget/latest")
+      .get("https://summer-blog-api.onrender.com/get/latest")
       .then((response) => {
         if (response.status == 200) {
           setLatestArticle(response.data);
         }
       });
     axios
-      .get("https://summer-blog-api.onrender.comget/articles")
+      .get("https://summer-blog-api.onrender.com/get/articles")
       .then((response) => {
         if (response.status == 200) {
           setArticles(response.data);
@@ -28,7 +28,7 @@ function Home() {
       });
 
     axios
-      .post("https://summer-blog-api.onrender.comfilterd/articles", {
+      .post("https://summer-blog-api.onrender.com/filterd/articles", {
         id: user?._id,
       })
       .then((response) => {

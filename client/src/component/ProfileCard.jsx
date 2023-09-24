@@ -17,7 +17,7 @@ function ProfileCard() {
   const handleLogout = () => {
     axios
       .post(
-        "https://summer-blog-api.onrender.comlogout",
+        "https://summer-blog-api.onrender.com/logout",
         {},
         {
           withCredentials: true,

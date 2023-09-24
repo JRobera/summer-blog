@@ -8,7 +8,7 @@ function ReplyComment({ commentid, author, comment }) {
 
   const handleReply = () => {
     axios
-      .post("https://summer-blog-api.onrender.comadd/comment/reply", {
+      .post("https://summer-blog-api.onrender.com/add/comment/reply", {
         commentid: commentid,
         comment: comment,
         reply: reply,

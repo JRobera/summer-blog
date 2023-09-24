@@ -33,7 +33,7 @@ function Contact() {
   const submit = (data) => {
     setIsSending(true);
     axios
-      .post("https://summer-blog-api.onrender.comapi/send-message", data)
+      .post("https://summer-blog-api.onrender.com/api/send-message", data)
       .then((response) => {
         if (response.status == 200) {
           generatesuccess(response.data);

@@ -32,7 +32,7 @@ function AdminLogin() {
 
   const submit = (data) => {
     axios
-      .post("https://summer-blog-api.onrender.comlogin/admin", data, {
+      .post("https://summer-blog-api.onrender.com/login/admin", data, {
         withCredentials: true,
       })
       .then((response) => {

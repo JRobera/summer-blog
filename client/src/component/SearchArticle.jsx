@@ -13,8 +13,8 @@ function SearchArticle({ articles, isvisiable }) {
     if (query !== "") {
       const results = articles?.filter((article) => {
         return (
-          article.header.toLowerCase().startsWith(query.toLowerCase()) ||
-          article?.content.toLowerCase().startsWith(query.toLowerCase())
+          article.header.toLowerCase().includes(query.toLowerCase()) ||
+          article?.content.toLowerCase().includes(query.toLowerCase())
         );
       });
       setResult(results);

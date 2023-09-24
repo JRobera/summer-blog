@@ -23,7 +23,7 @@ function AdminHomePage() {
       formData.append("profile-bg", file);
       formData.append("id", admin?._id);
       axios
-        .post("https://summer-blog-api.onrender.comchange-bg", formData)
+        .post("https://summer-blog-api.onrender.com/change-bg", formData)
         .then((res) => {
           if (res.status == 200) {
             generatesuccess(res.data);
@@ -39,7 +39,7 @@ function AdminHomePage() {
 
   const getAllArticles = () => {
     axios
-      .get("https://summer-blog-api.onrender.comget/articles")
+      .get("https://summer-blog-api.onrender.com/get/articles")
       .then((response) => {
         if (response.status == 200) {
           setArticles(response.data);
@@ -80,7 +80,7 @@ function AdminHomePage() {
             onClick={() => {
               axios
                 .post(
-                  "https://summer-blog-api.onrender.comadmin/logout",
+                  "https://summer-blog-api.onrender.com/admin/logout",
                   {},
                   {
                     withCredentials: true,

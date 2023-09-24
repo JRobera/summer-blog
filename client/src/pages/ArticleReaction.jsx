@@ -22,7 +22,7 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
   // when the like button is clicked update the count rerender the component with handleRefresh
   const handleLike = () => {
     axios
-      .post("https://summer-blog-api.onrender.comlike", payload)
+      .post("https://summer-blog-api.onrender.com/like", payload)
       .then((res) => {
         if (res.data) {
           handleRefresh();
@@ -36,7 +36,7 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
   // when the dislike button is clicked update the count rerender the component with handleRefresh
   const handleDislike = () => {
     axios
-      .post("https://summer-blog-api.onrender.comdislike", payload)
+      .post("https://summer-blog-api.onrender.com/dislike", payload)
       .then((res) => {
         if (res.data) {
           handleRefresh();
@@ -51,7 +51,7 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
   const commentPayload = { id: id, userid: user?._id, comment: newComment };
   const handleComment = () => {
     axios
-      .post("https://summer-blog-api.onrender.comnew-comment", commentPayload)
+      .post("https://summer-blog-api.onrender.com/new-comment", commentPayload)
       .then((res) => {
         if (res.status == 201) {
           handleRefresh();
