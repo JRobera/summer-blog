@@ -19,11 +19,13 @@ function NavBar() {
   const [SearchVisiable, setSearchVisiable] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:3007/get/articles").then((response) => {
-      if (response.status == 200) {
-        setArticles(response.data);
-      }
-    });
+    axios
+      .get("https://summer-blog-api.onrender.comget/articles")
+      .then((response) => {
+        if (response.status == 200) {
+          setArticles(response.data);
+        }
+      });
   }, []);
 
   const handleMenuClick = () => {
@@ -38,7 +40,7 @@ function NavBar() {
   const handleLogout = () => {
     axios
       .post(
-        "http://localhost:3007/logout",
+        "https://summer-blog-api.onrender.comlogout",
         {},
         {
           withCredentials: true,

@@ -13,7 +13,10 @@ function ProfileSidebar({ handleEditClick, handleChangeClick }) {
       formData.append("profile-img", file);
       formData.append("id", user?._id);
       axios
-        .post("http://localhost:3007/change-profile-image", formData)
+        .post(
+          "https://summer-blog-api.onrender.comchange-profile-image",
+          formData
+        )
         .then((res) => {
           if (res.status == 200) {
             generatesuccess(res.data);

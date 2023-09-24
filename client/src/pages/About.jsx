@@ -6,9 +6,11 @@ function About() {
   const [about, setAbout] = useState();
 
   useEffect(() => {
-    axios.get("http://localhost:3007/about/info").then((response) => {
-      setAbout(response.data);
-    });
+    axios
+      .get("https://summer-blog-api.onrender.comabout/info")
+      .then((response) => {
+        setAbout(response.data);
+      });
   }, []);
 
   return (

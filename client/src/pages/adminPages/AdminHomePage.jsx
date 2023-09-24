@@ -22,25 +22,29 @@ function AdminHomePage() {
       const formData = new FormData();
       formData.append("profile-bg", file);
       formData.append("id", admin?._id);
-      axios.post("http://localhost:3007/change-bg", formData).then((res) => {
-        if (res.status == 200) {
-          generatesuccess(res.data);
-          setAdmin(res.data);
-        } else {
-          generateError(res.data);
-        }
-      });
+      axios
+        .post("https://summer-blog-api.onrender.comchange-bg", formData)
+        .then((res) => {
+          if (res.status == 200) {
+            generatesuccess(res.data);
+            setAdmin(res.data);
+          } else {
+            generateError(res.data);
+          }
+        });
     } else {
       generateError("Invalid file formate!");
     }
   };
 
   const getAllArticles = () => {
-    axios.get("http://localhost:3007/get/articles").then((response) => {
-      if (response.status == 200) {
-        setArticles(response.data);
-      }
-    });
+    axios
+      .get("https://summer-blog-api.onrender.comget/articles")
+      .then((response) => {
+        if (response.status == 200) {
+          setArticles(response.data);
+        }
+      });
   };
 
   useEffect(() => {
@@ -76,7 +80,7 @@ function AdminHomePage() {
             onClick={() => {
               axios
                 .post(
-                  "http://localhost:3007/admin/logout",
+                  "https://summer-blog-api.onrender.comadmin/logout",
                   {},
                   {
                     withCredentials: true,

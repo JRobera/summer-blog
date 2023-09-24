@@ -8,7 +8,7 @@ import { Navigate, Outlet } from "react-router-dom";
 async function Auth() {
   try {
     const response = await axios.post(
-      "http://localhost:3007/user-refresh-token",
+      "https://summer-blog-api.onrender.comuser-refresh-token",
       {},
       {
         withCredentials: true,
@@ -33,7 +33,7 @@ function UserProtectedRoutes() {
     try {
       axios
         .post(
-          `http://localhost:3007/user-refresh-token`,
+          `https://summer-blog-api.onrender.comuser-refresh-token`,
           {},
           { withCredentials: true }
         )

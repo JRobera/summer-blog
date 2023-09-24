@@ -12,19 +12,25 @@ function Home() {
   const [latestArticle, setLatestArticle] = useState();
 
   useEffect(() => {
-    axios.get("http://localhost:3007/get/latest").then((response) => {
-      if (response.status == 200) {
-        setLatestArticle(response.data);
-      }
-    });
-    axios.get("http://localhost:3007/get/articles").then((response) => {
-      if (response.status == 200) {
-        setArticles(response.data);
-      }
-    });
+    axios
+      .get("https://summer-blog-api.onrender.comget/latest")
+      .then((response) => {
+        if (response.status == 200) {
+          setLatestArticle(response.data);
+        }
+      });
+    axios
+      .get("https://summer-blog-api.onrender.comget/articles")
+      .then((response) => {
+        if (response.status == 200) {
+          setArticles(response.data);
+        }
+      });
 
     axios
-      .post("http://localhost:3007/filterd/articles", { id: user?._id })
+      .post("https://summer-blog-api.onrender.comfilterd/articles", {
+        id: user?._id,
+      })
       .then((response) => {
         if (response.status == 200) {
           setFilteredArticles(response.data);

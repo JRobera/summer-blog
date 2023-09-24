@@ -24,7 +24,9 @@ function BookMarkItem() {
 
   const handleGetBookMarks = () => {
     axios
-      .post("http://localhost:3007/get/my/book-marks", { userId: user?._id })
+      .post("https://summer-blog-api.onrender.comget/my/book-marks", {
+        userId: user?._id,
+      })
       .then((res) => {
         if (res.status == 200) {
           setBookMarks(res.data?.bookMarks);
@@ -49,7 +51,7 @@ function BookMarkItem() {
 
   const handleUnBookMark = (_id) => {
     axios
-      .post("http://localhost:3007/add/bookmark", {
+      .post("https://summer-blog-api.onrender.comadd/bookmark", {
         articleid: _id,
         id: user?._id,
       })

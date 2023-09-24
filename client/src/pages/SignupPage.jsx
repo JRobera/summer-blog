@@ -41,7 +41,7 @@ function SignupPage() {
 
   const submit = (data) => {
     axios
-      .post("http://localhost:3007/create/new-user", data, {
+      .post("https://summer-blog-api.onrender.comcreate/new-user", data, {
         withCredentials: true,
       })
       .then((res) => {

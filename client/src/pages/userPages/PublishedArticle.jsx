@@ -11,7 +11,9 @@ function PublishedArticle() {
 
   useEffect(() => {
     axios
-      .post("http://localhost:3007/get/published-article", { u_id: user?._id })
+      .post("https://summer-blog-api.onrender.comget/published-article", {
+        u_id: user?._id,
+      })
       .then((res) => {
         if (res.status == 200) {
           setPublishedArticles(res.data);
@@ -32,7 +34,7 @@ function PublishedArticle() {
       })
     );
     axios
-      .post("http://localhost:3007/delete/article", { id: id })
+      .post("https://summer-blog-api.onrender.comdelete/article", { id: id })
       .then((res) => {
         if (res.status == 200) {
           generatesuccess(res.data);

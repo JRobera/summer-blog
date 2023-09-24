@@ -36,7 +36,10 @@ function ResetPassword() {
 
   const submit = (data) => {
     axios
-      .post(`http://localhost:3007/reset-password/${token}/${id}`, data)
+      .post(
+        `https://summer-blog-api.onrender.comreset-password/${token}/${id}`,
+        data
+      )
       .then((res) => {
         if (res.status == 200) {
           generatesuccess(res.data);

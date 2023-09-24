@@ -12,7 +12,10 @@ function Comment({ id, comment, author, likes }) {
 
   const handleCommentLike = () => {
     axios
-      .post("http://localhost:3007/like/comment", { id: id, userid: user?._id })
+      .post("https://summer-blog-api.onrender.comlike/comment", {
+        id: id,
+        userid: user?._id,
+      })
       .then((res) => {
         if (res.data) {
           setCommentLike(commentLike + 1);
@@ -25,7 +28,7 @@ function Comment({ id, comment, author, likes }) {
 
   useEffect(() => {
     axios
-      .post("http://localhost:3007/get/reply", { commentid: id })
+      .post("https://summer-blog-api.onrender.comget/reply", { commentid: id })
       .then((res) => {
         if (res) {
           console.log(res.data);

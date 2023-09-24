@@ -32,7 +32,7 @@ function ArticleEditor() {
       setIsPublishing(true);
       if (header !== "" && value !== "" && thumbnail !== "" && tag !== "") {
         axios
-          .post("http://localhost:3007/publish/article", formData)
+          .post("https://summer-blog-api.onrender.compublish/article", formData)
           .then((response) => {
             if (response.status == 200) {
               generatesuccess(response.data);

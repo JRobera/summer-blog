@@ -21,7 +21,7 @@ function ForgotPassword() {
 
   const submit = (data) => {
     axios
-      .post("http://localhost:3007/forgot/password", data)
+      .post("https://summer-blog-api.onrender.comforgot/password", data)
       .then((res) => {
         generatesuccess(res.data);
         reset();

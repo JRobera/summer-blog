@@ -22,7 +22,7 @@ const newUser = (req, res) => {
       const secret = process.env.ACCESS_TOKEN_SECRET + email;
       const user = { email: email, user: userName };
       const token = jwt.sign(user, secret, { expiresIn: "15m" });
-      const verifyLink = `http://localhost:3007/auth/email/${token}`;
+      const verifyLink = `https://summer-blog-api.onrender.comauth/email/${token}`;
 
       const mailerOption = {
         from: process.env.NODEMAILERUSER,

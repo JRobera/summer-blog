@@ -31,7 +31,10 @@ function ChangePassword({ handleChangeClick }) {
 
   const submit = (data) => {
     axios
-      .post("http://localhost:3007/change-password", { id: user?._id, ...data })
+      .post("https://summer-blog-api.onrender.comchange-password", {
+        id: user?._id,
+        ...data,
+      })
       .then((res) => {
         handleChangeClick();
         generatesuccess(res.data);

@@ -8,7 +8,7 @@ function ReplyComment({ commentid, author, comment }) {
 
   const handleReply = () => {
     axios
-      .post("http://localhost:3007/add/comment/reply", {
+      .post("https://summer-blog-api.onrender.comadd/comment/reply", {
         commentid: commentid,
         comment: comment,
         reply: reply,

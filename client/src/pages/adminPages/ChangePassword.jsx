@@ -35,7 +35,7 @@ function ChangePassword() {
         const { user } = admin;
         axios
           .post(
-            `http://localhost:3007/update/password/${AES.encrypt(
+            `https://summer-blog-api.onrender.comupdate/password/${AES.encrypt(
               user,
               import.meta.env.VITE_SECRET_KEY
             )}`,

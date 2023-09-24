@@ -21,33 +21,37 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
 
   // when the like button is clicked update the count rerender the component with handleRefresh
   const handleLike = () => {
-    axios.post("http://localhost:3007/like", payload).then((res) => {
-      if (res.data) {
-        handleRefresh();
-        // setLikeCount((likeCount) => likeCount + 1);
-      } else {
-        handleRefresh();
-        // setLikeCount((likeCount) => likeCount - 1);
-      }
-    });
+    axios
+      .post("https://summer-blog-api.onrender.comlike", payload)
+      .then((res) => {
+        if (res.data) {
+          handleRefresh();
+          // setLikeCount((likeCount) => likeCount + 1);
+        } else {
+          handleRefresh();
+          // setLikeCount((likeCount) => likeCount - 1);
+        }
+      });
   };
   // when the dislike button is clicked update the count rerender the component with handleRefresh
   const handleDislike = () => {
-    axios.post("http://localhost:3007/dislike", payload).then((res) => {
-      if (res.data) {
-        handleRefresh();
-        // setDisLikeCount((disLikeCount) => disLikeCount + 1);
-      } else {
-        handleRefresh();
-        // setDisLikeCount((disLikeCount) => disLikeCount - 1);
-      }
-    });
+    axios
+      .post("https://summer-blog-api.onrender.comdislike", payload)
+      .then((res) => {
+        if (res.data) {
+          handleRefresh();
+          // setDisLikeCount((disLikeCount) => disLikeCount + 1);
+        } else {
+          handleRefresh();
+          // setDisLikeCount((disLikeCount) => disLikeCount - 1);
+        }
+      });
   };
 
   const commentPayload = { id: id, userid: user?._id, comment: newComment };
   const handleComment = () => {
     axios
-      .post("http://localhost:3007/new-comment", commentPayload)
+      .post("https://summer-blog-api.onrender.comnew-comment", commentPayload)
       .then((res) => {
         if (res.status == 201) {
           handleRefresh();
