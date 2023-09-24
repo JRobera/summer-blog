@@ -116,7 +116,7 @@ const verifyUserEmail = (req, res) => {
               { _id: response._id },
               { isVerified: true, userToken: "" }
             );
-            res.redirect(`https://summer-blog-api.onrender.com/signin`);
+            res.redirect(`https://summer-blog.onrender.com/signin`);
           });
         } catch (error) {
           res.json(error.message);
