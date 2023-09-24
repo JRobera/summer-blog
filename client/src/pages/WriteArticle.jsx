@@ -49,7 +49,7 @@ function WriteArticle() {
               setIsPublishing(false);
               setSelectedFile("Select profile image");
               setTag("Choose Tag here");
-              navigate("/");
+              navigate("/home");
             } else {
               setIsPublishing(false);
               generateError(response.data);
