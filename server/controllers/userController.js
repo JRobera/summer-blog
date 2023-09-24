@@ -116,7 +116,7 @@ const verifyUserEmail = (req, res) => {
               { _id: response._id },
               { isVerified: true, userToken: "" }
             );
-            res.redirect(`http://localhost:5173/signin`);
+            res.redirect(`https://summer-blog-api.onrender.com/signin`);
           });
         } catch (error) {
           res.json(error.message);
@@ -264,7 +264,7 @@ const forgotPassword = (req, res) => {
         const secret = process.env.ACCESS_TOKEN_SECRET + response.password;
         const user = { email: response.email, id: response._id };
         const token = jwt.sign(user, secret, { expiresIn: "15m" });
-        const resetLink = `http://localhost:5173/reset-password/${token}/${response._id}`;
+        const resetLink = `https://summer-blog-api.onrender.com/reset-password/${token}/${response._id}`;
 
         const mailerOption = {
           from: process.env.NODEMAILERUSER,
@@ -298,7 +298,9 @@ const verifyResetPasswordLink = async (req, res) => {
         try {
           jwt.verify(token, secret, (err, user) => {
             if (err) return res.sendStatus(403).json("Invalid token");
-            res.redirect(`http://localhost:5173/reset-password/${token}/${id}`);
+            res.redirect(
+              `https://summer-blog-api.onrender.com/reset-password/${token}/${id}`
+            );
           });
         } catch (error) {
           res.json(error.message);
@@ -851,11 +853,11 @@ const paymentCallback = async (req, res) => {
     const paymentSuccess = { paymentSuccess: true };
 
     res.redirect(
-      "http://localhost:5173/home?showModal=true&paymentSuccess=true"
+      "https://summer-blog-api.onrender.com/home?showModal=true&paymentSuccess=true"
     );
     console.log("Success");
   } else {
-    res.redirect("http://localhost:5173/payment-failure");
+    res.redirect("https://summer-blog-api.onrender.com/payment-failure");
   }
 };
 
