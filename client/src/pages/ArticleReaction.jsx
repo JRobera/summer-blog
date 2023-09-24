@@ -65,21 +65,21 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
     <div className="contaner mx-auto mt-10 flex gap-5 flex-col">
       <div className="flex gap-10 justify-center">
         <div
-          className=" hover:text-[#7396ae] flex gap-1 items-center text-sm"
+          className=" hover:text-white/70  flex gap-1 items-center text-sm"
           onClick={handleLike}
         >
           <BiLike size={24} />
           <sub>{likes}</sub>
         </div>
         <div
-          className=" hover:text-[#7396ae] flex gap-1 items-center text-sm"
+          className=" hover:text-white/70  flex gap-1 items-center text-sm"
           onClick={handleDislike}
         >
           <BiDislike size={24} />
           <sub>{disLikes}</sub>
         </div>
         <div
-          className=" hover:text-[#7396ae] flex gap-1 items-center text-sm"
+          className=" hover:text-white/70  flex gap-1 items-center text-sm"
           onClick={handleCommentClick}
         >
           <FaRegComment size={24} />

@@ -375,7 +375,6 @@ const changePassword = async (req, res) => {
         }
       }
     });
-    console.log(user);
   } else {
     res.json("User not found");
   }
@@ -487,7 +486,6 @@ const updateArticle = async (req, res) => {
           content: req.body.article,
         }
       );
-      console.log(updatedArticle);
       res.status(200).json("Article updated!");
     } catch (error) {
       res.status(400).json(error.message);
@@ -516,7 +514,6 @@ const updateArticle = async (req, res) => {
             content: req.body.article,
           }
         );
-        console.log(updatedArticle);
         res.status(200).json("Article updated!");
       } catch (error) {
         res.status(400).json(error.message);
@@ -769,7 +766,6 @@ const getCommentReplys = async (req, res) => {
   const { commentid } = req.body;
   const reply = await Comment.findOne({ _id: commentid }).select("comments");
   // .populate({ path: "comments"});
-  console.log(reply);
 };
 
 const getPublishedArticles = async (req, res) => {

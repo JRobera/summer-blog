@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import { modules, formats } from "../../assets/reactQuill";
 import axios from "axios";
 import { generateError, generatesuccess } from "../../utility/Toasts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { set } from "react-hook-form";
 
 function UpdateArticle() {
@@ -16,6 +16,7 @@ function UpdateArticle() {
   const [tag, setTag] = useState("Choose Tag here");
   const params = useParams();
   const { id } = params;
+  const navigate = useNavigate();
 
   const handleThumbnail = (e) => {
     const file = e.target.files[0];
@@ -27,9 +28,8 @@ function UpdateArticle() {
     axios
       .get(`http://localhost:3007/article/to-update/${id}`)
       .then((res) => {
-        const { header, thumbnail, tag, content } = res.data;
+        const { header, tag, content } = res.data;
         setHeader(header);
-        // setThumbnail(thumbnail);
         setTag(tag);
         setValue(content);
       })
@@ -59,11 +59,13 @@ function UpdateArticle() {
               setIsUpdating(false);
               setSelectedFile("Select profile image");
               setTag("Choose Tag here");
+              navigate("/profile");
             } else {
               setIsUpdating(false);
               generateError(response.data);
               setSelectedFile("Select profile image");
               setTag("Choose Tag here");
+              navigate("/profile");
             }
           });
       } else {

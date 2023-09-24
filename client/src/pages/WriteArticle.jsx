@@ -6,6 +6,7 @@ import axios from "axios";
 import { generateError, generatesuccess } from "../utility/Toasts";
 import { BlogContext } from "../context/BlogContext";
 import NavBar from "../component/nav_bar/NavBar";
+import { useNavigate } from "react-router-dom";
 
 function WriteArticle() {
   const { user } = useContext(BlogContext);
@@ -15,6 +16,7 @@ function WriteArticle() {
   const [thumbnail, setThumbnail] = useState();
   const [selectedFile, setSelectedFile] = useState("");
   const [tag, setTag] = useState("Choose Tag here");
+  const navigate = useNavigate();
 
   const handleThumbnail = (e) => {
     const file = e.target.files[0];
@@ -43,12 +45,13 @@ function WriteArticle() {
               setValue("");
               setIsPublishing(false);
               setSelectedFile("Select profile image");
-              setTag("DEFAULT");
+              setTag("Choose Tag here");
+              navigate("/");
             } else {
               setIsPublishing(false);
               generateError(response.data);
               setSelectedFile("Select profile image");
-              setTag("DEFAULT");
+              setTag("Choose Tag here");
             }
           });
       } else {
@@ -59,7 +62,7 @@ function WriteArticle() {
       setIsPublishing(false);
       generateError("Invalid file formate!");
       setSelectedFile("Select profile image");
-      setTag("DEFAULT");
+      setTag("Choose Tag here");
     }
   };
 
@@ -80,7 +83,7 @@ function WriteArticle() {
         <div className=" flex gap-2 flex-col w-4/5 sm:w-3/5 mx-auto sm:flex-row justify-center mb-2 relative">
           <div className="relative">
             <label
-              className=" absolute bg-[#7395ae] w-full h-full text-center hover:text-[#557a95] font-semibold p-1 rounded-md cursor-pointer"
+              className=" absolute bg-[#7395ae] w-full h-full text-center hover:text-white/70 font-semibold p-1 rounded-md cursor-pointer"
               htmlFor="thumbnail"
             >
               {selectedFile ? selectedFile : "Select Thumbnail Image"}
@@ -94,7 +97,7 @@ function WriteArticle() {
             />
           </div>
           <select
-            className="bg-[#7395ae] outline-none rounded-md text-center p-2"
+            className="hover:text-white/70 bg-[#7395ae] outline-none rounded-md text-center p-2"
             onChange={(e) => {
               setTag(e.target.value);
             }}
@@ -128,7 +131,7 @@ function WriteArticle() {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="hover:text-[#5c5d61] bg-[#7396ae] w-48 sm:w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center flex gap-4 items-center justify-center "
+          className="hover:text-white/70 bg-[#7396ae] w-48 sm:w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center flex gap-4 items-center justify-center "
         >
           Publishing
           <span className="animate-spin inline-block w-5 h-5 rounded-full border-white border-solid border-2 border-x-transparent"></span>
@@ -137,7 +140,7 @@ function WriteArticle() {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="hover:text-[#557a95] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center "
+          className="hover:text-white/70 bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center "
         >
           Publish
         </button>

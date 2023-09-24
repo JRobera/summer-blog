@@ -40,7 +40,7 @@ function Pay({ fname, lname, email, amount }) {
       <input type="hidden" name="meta[title]" value="test" />
       <button
         type="submit"
-        className="hover:text-[#557a95] -translate-x-1/2 relative left-1/2"
+        className="hover:text-white/70 -translate-x-1/2 relative left-1/2"
       >
         Donate Now
       </button>

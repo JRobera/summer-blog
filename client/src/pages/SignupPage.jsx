@@ -60,10 +60,10 @@ function SignupPage() {
   return (
     <div className=" w-full min-h-screen grid items-center">
       <form
-        className="container mx-auto w-4/5 sm:w-3/5 md:w-1/2 xl:w-2/5 min-h-max flex flex-col justify-center gap-4 rounded-md bg-[#7395ae] shadow-md p-6"
+        className="container mx-auto w-4/5 sm:w-3/5 md:w-2/5 xl:w-2/5 min-h-max flex flex-col justify-center gap-4 rounded-md bg-[#7395ae] shadow-md p-6"
         onSubmit={handleSubmit(submit)}
       >
-        <h1 className=" w-1/3 mx-auto font-bold text-xs sm:text-lg text-center">
+        <h1 className=" w-1/3 mx-auto font-bold text-sm sm:text-base text-center">
           Signup
         </h1>
 
@@ -107,7 +107,7 @@ function SignupPage() {
           />
         </div>
         <button
-          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-xs sm:text-lg text-white hover:text-[#7395ae] "
+          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-sm sm:text-base text-white hover:text-white/70 "
           type="submit"
         >
           Signup

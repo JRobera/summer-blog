@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
@@ -19,8 +18,6 @@ import ResetPassword from "./pages/ResetPassword";
 import UpdateArticle from "./pages/adminPages/UpdateArticle";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <Routes>
@@ -32,11 +29,12 @@ function App() {
 
         {/* User protected routes */}
         <Route element={<UserProtectedRoutes />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/book-marks" element={<LibraryPage />} />
-          <Route path="/write/article" element={<WriteArticle />} />
-          <Route path="/blog/:id" element={<Blog />} />
+          <Route path="home" element={<Home />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="book-marks" element={<LibraryPage />} />
+          <Route path="write/article" element={<WriteArticle />} />
+          <Route path="blog/:id" element={<Blog />} />
+          <Route path="/update/article/:id" element={<UpdateArticle />} />
         </Route>
 
         {/* Admin pages */}

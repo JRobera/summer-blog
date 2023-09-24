@@ -47,7 +47,7 @@ function ChangePassword({ handleChangeClick }) {
       <div className="bg-[#557a95] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-2 w-11/12 md:w-3/5 h-3/5 rounded-lg">
         <span
           onClick={handleChangeClick}
-          className="absolute right-2 hover:text-[#7395ae]"
+          className="absolute right-2 hover:text-white/70"
         >
           <AiOutlineClose size={20} />
         </span>
@@ -100,7 +100,7 @@ function ChangePassword({ handleChangeClick }) {
           </div>
           <button
             type="submit"
-            className="text-center w-full mt-4 bg-[#7395ae] py-1 rounded-md hover:text-[#557a95]"
+            className="text-center w-full mt-4 bg-[#7395ae] py-1 rounded-md hover:text-white/70"
           >
             Change Password
           </button>

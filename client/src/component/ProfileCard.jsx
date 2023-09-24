@@ -39,14 +39,14 @@ function ProfileCard() {
     <div className="flex flex-col gap-2 bg-[#557a95] absolute top-16 p-4 rounded-md z-20">
       <Link
         to="/profile"
-        className="hover:text-[#7395ae] flex gap-2 items-center"
+        className="hover:text-white/70  flex gap-2 items-center"
       >
         <GoPerson />
         Profile
       </Link>
       <Link
         to="/book-marks"
-        className="hover:text-[#7395ae] flex gap-2 items-center"
+        className="hover:text-white/70  flex gap-2 items-center"
       >
         <BsBookmarks />
         Library
@@ -54,7 +54,7 @@ function ProfileCard() {
 
       <button
         onClick={handleLogout}
-        className="font-semibold mr-2 hover:text-[#7395ae]"
+        className="font-semibold mr-2 hover:text-white/70 "
       >
         Logout
       </button>

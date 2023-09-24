@@ -51,7 +51,7 @@ function Comment({ id, comment, author, likes }) {
       <p className="text-sm">{comment}</p>
       <div className="flex justify-between mt-2">
         <span
-          className="flex gap-1 items-center hover:text-[#557a95]"
+          className="flex gap-1 items-center hover:text-white/70 "
           onClick={handleCommentLike}
         >
           <BiLike size={24} />
