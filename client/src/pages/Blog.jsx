@@ -7,11 +7,38 @@ import axios from "axios";
 import { BlogContext } from "../context/BlogContext";
 import ArticleReaction from "./ArticleReaction";
 import Pay from "../component/Pay";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
 function Blog() {
   const { user } = useContext(BlogContext);
   const [article, setArticle] = useState(null);
   const [donater, setDonater] = useState();
+  const schema = yup.object().shape({
+    firstName: yup.string("Must be string").required("First name is required"),
+    lastName: yup.string("Must be string").required("Last name is required"),
+    email: yup
+      .string("Must be string")
+      .required("Email is required")
+      .email("Invaid email format"),
+    amount: yup
+      .number("Must be number")
+      .typeError("Must be number")
+      .min(3, "Amount must be greater than 3")
+      .required("Amount is required"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
+  const submit = (data) => {
+    console.log(data);
+    setDonater(data);
+  };
 
   const myarticle = useRef();
   const params = useParams();
@@ -42,12 +69,6 @@ function Blog() {
     month: "short",
     day: "numeric",
   });
-
-  const handleChange = (e) => {
-    const { value, name } = e.target;
-    setDonater({ ...donater, [name]: value });
-    console.log(donater);
-  };
 
   return (
     <section className=" art p-2 min-h-full">
@@ -88,56 +109,84 @@ function Blog() {
       {/* Donation section */}
       <div className="container mx-auto">
         <div className="flex flex-col gap-4 bg-[#7395ae] rounded p-4 w-4/5 md:w-1/2 mx-auto">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="">First Name</label>
+          <div className="flex flex-col gap-2 relative">
+            {errors.firstName && (
+              <span className="text-xs text-red-600 absolute -top-4 pl-2">
+                {errors.firstName.message}
+              </span>
+            )}
             <input
               type="text"
-              name="fname"
+              name="firstName"
               className="bg-[#557a95] p-2 rounded-md placeholder:text-[#7395ae] outline-none"
               placeholder="Enter first name"
-              onChange={handleChange}
+              {...register("firstName")}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="">Last Name</label>
+          <div className="flex flex-col gap-2 relative">
+            {errors.lastName && (
+              <span className="text-xs text-red-600 absolute -top-4 pl-2">
+                {errors.lastName.message}
+              </span>
+            )}
             <input
               type="text"
-              name="lname"
+              name="lastName"
               className="bg-[#557a95] p-2 rounded-md placeholder:text-[#7395ae] outline-none"
               placeholder="Enter last name"
-              onChange={handleChange}
+              {...register("lastName")}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="">Email</label>
+          <div className="flex flex-col gap-2 relative">
+            {errors.email && (
+              <span className="text-xs text-red-600 absolute -top-4 pl-2">
+                {errors.email.message}
+              </span>
+            )}
             <input
               type="email"
               name="email"
               className="bg-[#557a95] p-2 rounded-md placeholder:text-[#7395ae] outline-none"
               placeholder="Enter email"
-              onChange={handleChange}
+              {...register("email")}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="">Amount</label>
+          <div className="flex flex-col gap-2 relative">
+            {errors.amount && (
+              <span className="text-xs text-red-600 absolute -top-4 pl-2">
+                {errors.amount.message}
+              </span>
+            )}
             <input
               type="number"
               name="amount"
               className="bg-[#557a95] p-2 rounded-md placeholder:text-[#7395ae] outline-none"
               placeholder="Enter amount"
-              onChange={handleChange}
+              {...register("amount")}
             />
           </div>
-
-          <Pay
-            fname={donater?.fname}
-            lname={donater?.lname}
-            email={donater?.email}
-            amount={donater?.amount}
-          />
+          {!donater?.firstName &&
+          !donater?.lastName &&
+          !donater?.email &&
+          !donater?.amount ? (
+            <button
+              type="submit"
+              className="bg-[#557a95] p-2 rounded-md w-fit hover:text-white/70 -translate-x-1/2 relative left-1/2"
+              onClick={handleSubmit(submit)}
+            >
+              Donate Now
+            </button>
+          ) : (
+            <Pay
+              fname={donater?.firstName}
+              lname={donater?.lastName}
+              email={donater?.email}
+              amount={donater?.amount}
+            />
+          )}
         </div>
       </div>
     </section>

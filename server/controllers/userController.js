@@ -852,12 +852,10 @@ const paymentCallback = async (req, res) => {
   if (status === "success") {
     const paymentSuccess = { paymentSuccess: true };
 
-    res.redirect(
-      "https://summer-blog-api.onrender.com/home?showModal=true&paymentSuccess=true"
-    );
+    res.redirect("https://summer-blog.onrender.com/home?paymentSuccess=true");
     console.log("Success");
   } else {
-    res.redirect("https://summer-blog-api.onrender.com/payment-failure");
+    res.redirect("https://summer-blog.onrender.com/payment-failure");
   }
 };
 
