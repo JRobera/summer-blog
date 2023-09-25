@@ -64,10 +64,14 @@ body,
   text-decoration-style: solid;
 }
 
+.ql-editor.ql-editor,
+.ql-editor.ql-blank::before {
+  min-height: inherit;
+}
+
 .ql-editor.ql-blank::before {
   color: rgba(211, 211, 211, 0.7);
   font-weight: bold;
-  height: 200px;
 }
 
 .ql-container.ql-snow {

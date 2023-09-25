@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 const { response } = require("express");
 const { logOut } = require("./adminController");
 const { verifyPayment } = require("../services/verifyPayment");
+const { removeFromCloudinary } = require("../services/cloudinary");
 
 const newUser = (req, res) => {
   const { userName, email, password } = req.body;
@@ -451,6 +452,7 @@ const publishArticle = async (req, res) => {
 
 const deleteArticle = (req, res) => {
   Article.findOneAndDelete({ _id: req.body.id }).then((response) => {
+    removeFromCloudinary(response?.public_id);
     if (response) {
       res.status(200).json("Article Deleted Successfuly");
     } else {
@@ -488,6 +490,7 @@ const updateArticle = async (req, res) => {
           content: req.body.article,
         }
       );
+      console.log("up_id: " + updateArticle?.public_id);
       res.status(200).json("Article updated!");
     } catch (error) {
       res.status(400).json(error.message);

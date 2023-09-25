@@ -33,6 +33,53 @@ function ProfilePage() {
     }
   }, [isEditVisiable, isChangePasswordVisiable]);
 
+  const [publishedArticles, setPublishedArticles] = useState();
+
+  useEffect(() => {
+    axios
+      .post("https://summer-blog-api.onrender.com/get/published-article", {
+        u_id: user?._id,
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          setPublishedArticles(res.data);
+        } else {
+          console.log("error");
+          generateError(res.data);
+        }
+      })
+      .catch((error) => {
+        generateError(error);
+      });
+  }, []);
+
+  const handleDelete = (id) => {
+    setPublishedArticles(
+      publishedArticles?.filter((article) => {
+        return article?._id !== id;
+      })
+    );
+    axios
+      .post("https://summer-blog-api.onrender.com/delete/article", { id: id })
+      .then((res) => {
+        if (res.status == 200) {
+          generatesuccess(res.data);
+        }
+      })
+      .catch((err) => {
+        generateError(err.message);
+      });
+  };
+
+  const formattedDate = (createdAt) => {
+    const postDate = new Date(createdAt);
+    return postDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className=" px-2 relative">
       <NavBar />
@@ -40,7 +87,17 @@ function ProfilePage() {
         <div className="flex-[2] bg-[#7395ae] rounded-md">
           <UserTabs />
           <div className="no-scrollbar max-h-screen overflow-y-scroll">
-            <PublishedArticle />
+            {publishedArticles?.map((article) => (
+              <PublishedArticle
+                key={article?._id}
+                _id={article?._id}
+                header={article?.header}
+                thumbnail={article?.thumbnail}
+                content={article?.content}
+                createdAt={formattedDate(article?.createdAt)}
+                handleDelete={handleDelete}
+              />
+            ))}
           </div>
         </div>
         <ProfileSidebar
