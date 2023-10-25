@@ -226,7 +226,7 @@ const refreshAccessToken = (req, res) => {
 const updateUserPassword = (req, res) => {};
 
 const userLogout = (req, res) => {
-  res.clearCookie("ujwt", { httpOnly: true, path: "/" });
+  res.clearCookie("ujwt", { httpOnly: true, path: "/", expiresIn: Date.now() });
   res.status(200).json("User Logged out");
 };
 
