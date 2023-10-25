@@ -272,13 +272,12 @@ const forgotPassword = (req, res) => {
           __dirname,
           "../mails/password-reset-mail.ejs"
         );
-        const data = { user, resetLink };
+        const data = { response, resetLink };
         const html = await ejs.renderFile(templatePath, data);
         const mailerOption = {
           from: process.env.NODEMAILERUSER,
           to: email,
           subject: "Password Reset Request",
-          // html: `<p>Click <strong><a href="${resetLink}"> here </a></strong> to reset your password.</p>`,
           html,
         };
 
