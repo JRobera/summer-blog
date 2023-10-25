@@ -83,7 +83,7 @@ function AdminLogin() {
           )}
           <input
             className="p-2 rounded-md w-full outline-none bg-[#557a95] placeholder:text-[#7395ae] "
-            type="text"
+            type="password"
             placeholder="Enter password"
             {...register("password")}
           />
