@@ -2,6 +2,8 @@ const { AES, enc } = require("crypto-js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const ejs = require("ejs");
+const path = require("path");
 const { response } = require("express");
 const { logOut } = require("./adminController");
 const { verifyPayment } = require("../services/verifyPayment");
@@ -252,7 +254,7 @@ const forgotPassword = (req, res) => {
   const { email } = req.body;
 
   User.findOne({ email: email })
-    .then((response) => {
+    .then(async (response) => {
       if (response) {
         const transporter = nodemailer.createTransport({
           service: "gmail",
@@ -271,7 +273,7 @@ const forgotPassword = (req, res) => {
           "../mails/password-reset-mail.ejs"
         );
         const data = { user, resetLink };
-        const html = ejs.renderFile(templatePath, data);
+        const html = await ejs.renderFile(templatePath, data);
         const mailerOption = {
           from: process.env.NODEMAILERUSER,
           to: email,
@@ -282,6 +284,7 @@ const forgotPassword = (req, res) => {
 
         transporter.sendMail(mailerOption, (error, info) => {
           if (error) {
+            console.log(error);
             res.json(error);
           } else {
             res.json("Check your email for password reset link");
@@ -292,7 +295,7 @@ const forgotPassword = (req, res) => {
       }
     })
     .catch((error) => {
-      res.json(err);
+      res.json(error);
     });
 };
 
