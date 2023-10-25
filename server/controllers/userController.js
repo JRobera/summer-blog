@@ -265,13 +265,19 @@ const forgotPassword = (req, res) => {
         const secret = process.env.ACCESS_TOKEN_SECRET + response.password;
         const user = { email: response.email, id: response._id };
         const token = jwt.sign(user, secret, { expiresIn: "15m" });
-        const resetLink = `https://summer-blog-api.onrender.com/reset-password/${token}/${response._id}`;
-
+        const resetLink = `https://summer-blog.onrender.com/reset-password/${token}/${response._id}`;
+        const templatePath = path.join(
+          __dirname,
+          "../mails/password-reset-mail.ejs"
+        );
+        const data = { user, resetLink };
+        const html = ejs.renderFile(templatePath, data);
         const mailerOption = {
           from: process.env.NODEMAILERUSER,
           to: email,
           subject: "Password Reset Request",
-          html: `<p>Click <strong><a href="${resetLink}"> here </a></strong> to reset your password.</p>`,
+          // html: `<p>Click <strong><a href="${resetLink}"> here </a></strong> to reset your password.</p>`,
+          html,
         };
 
         transporter.sendMail(mailerOption, (error, info) => {
