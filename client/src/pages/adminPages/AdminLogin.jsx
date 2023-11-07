@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
@@ -11,6 +11,7 @@ import jwt_decode from "jwt-decode";
 
 function AdminLogin() {
   const { setAdmin, setAccessToken } = useContext(BlogContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   let history = useNavigate();
 
@@ -31,6 +32,7 @@ function AdminLogin() {
   } = useForm({ resolver: yupResolver(schema) });
 
   const submit = (data) => {
+    setIsLoading(true);
     axios
       .post("https://summer-blog-api.onrender.com/login/admin", data, {
         withCredentials: true,
@@ -42,13 +44,16 @@ function AdminLogin() {
           generatesuccess("Login successful");
           redirect();
           reset();
+          setIsLoading(false);
         } else {
           generateError(response.data);
           reset();
+          setIsLoading(false);
         }
       })
       .catch((err) => {
         generateError(err.response);
+        setIsLoading(false);
       });
   };
 
@@ -90,9 +95,12 @@ function AdminLogin() {
         </div>
         <button
           type="submit"
-          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-xs sm:text-lg text-white hover:text-[#7395ae] "
+          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-xs sm:text-lg text-white hover:text-[#7395ae] flex gap-4 items-center justify-center"
         >
-          Log In
+          Login
+          {isLoading && (
+            <span className="animate-spin inline-block w-4 h-4 rounded-full border-white border-solid border-2 border-x-transparent"></span>
+          )}
         </button>
       </form>
     </div>

@@ -55,7 +55,7 @@ function Home() {
       </div>
       <div className="container mx-auto mt-8 border-t-[1px] border-t-[#7395ae] xl:w-4/5">
         <p className="my-2 text-sm text-gray-300 font-semibold">For you</p>
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
+        <div className="flex overflow-x-auto py-2 sm:grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
           {filteredArticles?.map((article, i) => {
             return (
               <ArtPreview

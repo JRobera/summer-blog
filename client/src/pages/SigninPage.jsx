@@ -112,17 +112,14 @@ function SigninPage() {
         </div>
         <button
           type="submit"
-          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-sm sm:text-base text-white hover:text-white/70 flex gap-4 items-center justify-center"
+          className="bg-[#557a95] w-2/5 sm:w-1/3 mx-auto p-2 rounded-md font-bold text-sm sm:text-base text-white hover:text-white/70 flex gap-4 items-center justify-center"
         >
           Login
           {isLoading && (
             <span className="animate-spin inline-block w-4 h-4 rounded-full border-white border-solid border-2 border-x-transparent"></span>
           )}
         </button>
-        <Link
-          to={"/forgot-password"}
-          className="forgot-link hover:underline text-sm"
-        >
+        <Link to={"/forgot-password"} className="forgot-link underline text-sm">
           Forgot Password
         </Link>
       </form>

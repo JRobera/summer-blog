@@ -33,7 +33,7 @@ function ArtPreview({ thumbnail, id, title, text, view, like, isLatest }) {
       className={
         isLatest == "true"
           ? "flex md:flex-row gap-8 flex-col items-center "
-          : "flex gap-2 flex-col transition duration-500 "
+          : "flex gap-2 flex-col transition duration-500 flex-shrink-0 "
       }
     >
       <div
