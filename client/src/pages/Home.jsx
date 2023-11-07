@@ -65,7 +65,7 @@ function Home() {
                 thumbnail={article?.thumbnail}
                 title={article?.header}
                 text={article?.content}
-                view={article?.view}
+                view={article?.view.length}
                 like={article?.likes.length}
               />
             );

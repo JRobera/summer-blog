@@ -226,7 +226,7 @@ const refreshAccessToken = (req, res) => {
 const updateUserPassword = (req, res) => {};
 
 const userLogout = (req, res) => {
-  res.clearCookie("ujwt");
+  res.clearCookie("ujwt", { httpOnly: true, path: "/", expires: new Date(0) });
   res.status(200).json("User Logged out");
 };
 
@@ -755,7 +755,7 @@ const getArticle = (req, res) => {
   try {
     Article.findOne({ _id: id })
       .select(
-        "author thumbnail content disLikes likes comments header createdAt"
+        "author thumbnail content disLikes likes comments header view createdAt"
       )
       .populate({ path: "author", select: "user profile" })
       .populate({
@@ -770,6 +770,19 @@ const getArticle = (req, res) => {
         }
       });
   } catch (err) {
+    res.json(err);
+  }
+};
+
+const addView = async (req, res) => {
+  const { id, userid } = req.body;
+  try {
+    const article = await Article.updateOne(
+      { _id: id, view: { $nin: [userid] } },
+      { $push: { view: userid } }
+    );
+    res.json(article);
+  } catch (error) {
     res.json(err);
   }
 };
@@ -895,6 +908,7 @@ module.exports = {
   getLatestArticle,
   getArticles,
   getArticle,
+  addView,
   getCommentReplys,
   getPublishedArticles,
   searchArticle,

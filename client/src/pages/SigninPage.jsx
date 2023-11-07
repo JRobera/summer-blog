@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 function SigninPage() {
   const { setUser, accessToken, setAccessToken } = useContext(BlogContext);
   const [attemptCount, setAttempteCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
     email: yup
@@ -44,6 +45,7 @@ function SigninPage() {
 
   const submit = (data) => {
     if (attemptCount < 3) {
+      setIsLoading(true);
       axios
         .post("https://summer-blog-api.onrender.com/login", data, {
           withCredentials: true,
@@ -56,10 +58,12 @@ function SigninPage() {
             redirect("/home");
             reset();
             setAttempteCount(attemptCount + 1);
+            setIsLoading(false);
           } else {
             generateError(response.data);
             reset();
             setAttempteCount(attemptCount + 1);
+            setIsLoading(false);
           }
         });
     } else {
@@ -67,6 +71,7 @@ function SigninPage() {
       setInterval(() => {
         setAttempteCount(0);
       }, 1000 * 30);
+      setIsLoading(false);
     }
   };
 
@@ -107,9 +112,12 @@ function SigninPage() {
         </div>
         <button
           type="submit"
-          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-sm sm:text-base text-white hover:text-white/70 "
+          className="bg-[#557a95] w-2/5 sm:w-1/5 mx-auto p-2 rounded-md font-bold text-sm sm:text-base text-white hover:text-white/70 flex gap-4 items-center justify-center"
         >
           Login
+          {isLoading && (
+            <span className="animate-spin inline-block w-4 h-4 rounded-full border-white border-solid border-2 border-x-transparent"></span>
+          )}
         </button>
         <Link
           to={"/forgot-password"}

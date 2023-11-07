@@ -33,6 +33,7 @@ const {
   commentReply,
   getCommentReplys,
   getUserDataEdit,
+  addView,
 } = require("../controllers/userController");
 const upload = require("../middleware/upload");
 
@@ -68,6 +69,7 @@ router.post("/get/reply", getCommentReplys);
 router.post("/add/bookmark", addBookMark);
 router.post("/get/my/book-marks", getBookMarks);
 router.post("/get/published-article", getPublishedArticles);
+router.put("/count-view", addView);
 
 router.get("/get/users/data/:id", getUserDataEdit);
 router.get("/get/latest", getLatestArticle);

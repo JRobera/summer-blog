@@ -44,6 +44,22 @@ function Blog() {
   const params = useParams();
   const { id } = params;
 
+  useEffect(() => {
+    const isViewed = article?.view.includes(user?._id);
+    const countView = async () => {
+      const viewCount = await axios.put(
+        "https://summer-blog-api.onrender.com/count-view",
+        {
+          id: id,
+          userid: user?._id,
+        }
+      );
+    };
+    if (!isViewed) {
+      countView();
+    }
+  }, []);
+
   const handleRefresh = () => {
     axios.get(`https://summer-blog-api.onrender.com/blog/${id}`).then((res) => {
       if (res.status == 200) {

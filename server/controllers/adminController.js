@@ -171,7 +171,11 @@ const deleteAccount = (req, res) => {
 };
 
 const logOut = (req, res) => {
-  res.clearCookie("adjwt");
+  res.clearCookie("adjwt", {
+    httpOnly: true,
+    path: "/",
+    expires: new Date(0),
+  });
   res.status(200).json("User Logged out");
 };
 

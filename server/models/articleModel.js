@@ -12,7 +12,7 @@ const ArticleSchema = mongoose.Schema(
     tag: { type: String },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
     disLikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-    view: { type: Number, default: 0 },
+    view: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
     author: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
   },

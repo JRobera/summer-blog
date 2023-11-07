@@ -54,8 +54,8 @@ function ProfilePage() {
   }, []);
 
   const handleDelete = (id) => {
-    setPublishedArticles(
-      publishedArticles?.filter((article) => {
+    setPublishedArticles((prevArticles) =>
+      prevArticles?.filter((article) => {
         return article?._id !== id;
       })
     );

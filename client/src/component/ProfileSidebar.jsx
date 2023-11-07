@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { BlogContext } from "../context/BlogContext";
+import { generateError, generatesuccess } from "../utility/Toasts";
 
 function ProfileSidebar({ handleEditClick, handleChangeClick }) {
   const { user, setUser } = useContext(BlogContext);
@@ -29,6 +30,7 @@ function ProfileSidebar({ handleEditClick, handleChangeClick }) {
       generateError("Invalid file formate!");
     }
   };
+  useEffect(() => {}, [user]);
 
   return (
     <div className="bg-[#7395ae] flex-1 pl-10 pt-10 pb-1 rounded-md">

@@ -112,7 +112,7 @@ function AdminHomePage() {
               thumbnail={article?.thumbnail}
               content={article?.content}
               like={article?.likes.length}
-              view={article?.view}
+              view={article?.view.length}
               dislikes={article?.disLikes.length}
               getAllArticles={getAllArticles}
             />
