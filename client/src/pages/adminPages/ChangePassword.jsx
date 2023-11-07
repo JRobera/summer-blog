@@ -8,6 +8,7 @@ import { generateError, generatesuccess } from "../../utility/Toasts";
 import { BlogContext } from "../../context/BlogContext";
 
 function ChangePassword() {
+  const [isLoading, setIsLoading] = useState(false);
   const { admin } = useContext(BlogContext);
 
   const schema = yup.object().shape({
@@ -33,6 +34,7 @@ function ChangePassword() {
     <form
       onSubmit={handleSubmit((data) => {
         const { user } = admin;
+        setIsLoading(true);
         axios
           .post(
             `https://summer-blog-api.onrender.com/update/password/${AES.encrypt(
@@ -44,8 +46,10 @@ function ChangePassword() {
           .then((response) => {
             if (response.status == 200) {
               generatesuccess(response.data);
+              setIsLoading(false);
             } else {
               generateError(response.data);
+              setIsLoading(false);
             }
           });
         reset();
@@ -92,10 +96,13 @@ function ChangePassword() {
         />
       </div>
       <button
-        className="bg-[#7396ae] p-2 rounded-lg hover:text-[#5c5d61]"
+        className="bg-[#7396ae] p-2 rounded-lg hover:text-[#5c5d61] flex gap-4 items-center justify-center"
         type="submit"
       >
         Update password
+        {isLoading && (
+          <span className="animate-spin inline-block w-4 h-4 rounded-full border-white border-solid border-2 border-x-transparent"></span>
+        )}
       </button>
     </form>
   );

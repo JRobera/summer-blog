@@ -49,7 +49,7 @@ function Home() {
           thumbnail={latestArticle?.thumbnail}
           title={latestArticle?.header}
           text={latestArticle?.content}
-          view={latestArticle?.view}
+          view={latestArticle?.view.length}
           like={latestArticle?.likes.length}
         />
       </div>
@@ -87,7 +87,7 @@ function Home() {
                 thumbnail={article?.thumbnail}
                 title={article?.header}
                 text={article?.content}
-                view={article?.view}
+                view={article?.view.length}
                 like={article?.likes.length}
               />
             );
