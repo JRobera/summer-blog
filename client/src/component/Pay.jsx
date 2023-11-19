@@ -1,8 +1,11 @@
 import React from "react";
+import api from "../utility/axios.js";
 import { v4 as uuidv4 } from "uuid";
 
 function Pay({ fname, lname, email, amount }) {
   const tx_ref = fname + "-tx-" + uuidv4();
+  const callbackUrl =
+    api.defaults.baseURL + `/payment-callback?tx_ref=${tx_ref}`;
   return (
     <form method="POST" action="https://api.chapa.co/v1/hosted/pay">
       <input
@@ -27,16 +30,8 @@ function Pay({ fname, lname, email, amount }) {
         name="logo"
         value="https://chapa.link/asset/images/chapa_swirl.svg"
       />
-      <input
-        type="hidden"
-        name="callback_url"
-        value={`https://summer-blog-api.onrender.com/payment-callback?tx_ref=${tx_ref}`}
-      />
-      <input
-        type="hidden"
-        name="return_url"
-        value={`https://summer-blog-api.onrender.com/payment-callback?tx_ref=${tx_ref}`}
-      />
+      <input type="hidden" name="callback_url" value={callbackUrl} />
+      <input type="hidden" name="return_url" value={callbackUrl} />
       <input type="hidden" name="meta[title]" value="test" />
       <button
         type="submit"

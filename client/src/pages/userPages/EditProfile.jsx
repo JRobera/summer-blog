@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import ArticleTag from "../../component/ArticleTag";
 import { BlogContext } from "../../context/BlogContext";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
+// import { useForm } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import * as yup from "yup";
+// import ArticleTag from "../../component/ArticleTag";
 
 function EditProfile({ handleEditClick }) {
   const { user, setUser } = useContext(BlogContext);
@@ -33,8 +33,8 @@ function EditProfile({ handleEditClick }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios
-      .post("https://summer-blog-api.onrender.com/update-user-info", {
+    api
+      .post("/update-user-info", {
         id: user._id,
         name: userName,
         tags: selectedTags,
@@ -60,11 +60,9 @@ function EditProfile({ handleEditClick }) {
 
   useEffect(() => {
     // console.log(selectedTags);
-    axios
-      .get(`https://summer-blog-api.onrender.com/get/users/data/${user?._id}`)
-      .then((res) => {
-        setSelectedTags(res.data.interests);
-      });
+    api.get(`/get/users/data/${user?._id}`).then((res) => {
+      setSelectedTags(res.data.interests);
+    });
   }, []);
 
   const tags = [

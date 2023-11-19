@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules, formats } from "../../assets/reactQuill";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 
 function ArticleEditor() {
@@ -31,26 +31,21 @@ function ArticleEditor() {
 
       setIsPublishing(true);
       if (header !== "" && value !== "" && thumbnail !== "" && tag !== "") {
-        axios
-          .post(
-            "https://summer-blog-api.onrender.com/publish/article",
-            formData
-          )
-          .then((response) => {
-            if (response.status == 200) {
-              generatesuccess(response.data);
-              setHeader("");
-              setValue("");
-              setIsPublishing(false);
-              setSelectedFile("Select profile image");
-              setTag("DEFAULT");
-            } else {
-              setIsPublishing(false);
-              generateError(response.data);
-              setSelectedFile("Select profile image");
-              setTag("DEFAULT");
-            }
-          });
+        api.post("/publish/article", formData).then((response) => {
+          if (response.status == 200) {
+            generatesuccess(response.data);
+            setHeader("");
+            setValue("");
+            setIsPublishing(false);
+            setSelectedFile("Select profile image");
+            setTag("DEFAULT");
+          } else {
+            setIsPublishing(false);
+            generateError(response.data);
+            setSelectedFile("Select profile image");
+            setTag("DEFAULT");
+          }
+        });
       } else {
         setIsPublishing(false);
         generateError("All inputs required!");
@@ -131,7 +126,7 @@ function ArticleEditor() {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center flex gap-4 items-center justify-center "
+          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/3 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center flex gap-4 items-center justify-center "
         >
           Publishing
           <span className="animate-spin inline-block w-5 h-5 rounded-full border-white border-solid border-2 border-x-transparent"></span>
@@ -140,7 +135,7 @@ function ArticleEditor() {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/5 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center "
+          className="hover:text-[#5c5d61] bg-[#7396ae] w-1/3 rounded-md p-2 mt-2 absolute left-1/2 -translate-x-1/2 text-center "
         >
           Publish
         </button>

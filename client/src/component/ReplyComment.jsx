@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../utility/axios.js";
 import React, { useContext, useState } from "react";
 import { BlogContext } from "../context/BlogContext";
 
@@ -7,8 +7,8 @@ function ReplyComment({ commentid, author, comment }) {
   const [reply, setReply] = useState("");
 
   const handleReply = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/add/comment/reply", {
+    api
+      .post("/add/comment/reply", {
         commentid: commentid,
         comment: comment,
         reply: reply,

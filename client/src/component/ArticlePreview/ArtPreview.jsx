@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { BsBookmarks } from "react-icons/bs";
 import { AES, enc } from "crypto-js";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { BlogContext } from "../../context/BlogContext";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 
@@ -14,8 +14,8 @@ function ArtPreview({ thumbnail, id, title, text, view, like, isLatest }) {
   };
 
   const handleBookMark = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/add/bookmark", {
+    api
+      .post("/add/bookmark", {
         articleid: id,
         id: user?._id,
       })
@@ -33,7 +33,7 @@ function ArtPreview({ thumbnail, id, title, text, view, like, isLatest }) {
       className={
         isLatest == "true"
           ? "flex md:flex-row gap-8 flex-col items-center "
-          : "flex gap-2 flex-col transition duration-500 flex-shrink-0 "
+          : "flex gap-2 flex-col transition duration-500 flex-shrink-0 w-full "
       }
     >
       <div

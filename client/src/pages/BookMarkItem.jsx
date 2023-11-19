@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BiBookmarkMinus } from "react-icons/bi";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { generateError, generatesuccess } from "../utility/Toasts";
 import { BlogContext } from "../context/BlogContext";
 
@@ -23,8 +23,8 @@ function BookMarkItem() {
   };
 
   const handleGetBookMarks = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/get/my/book-marks", {
+    api
+      .post("/get/my/book-marks", {
         userId: user?._id,
       })
       .then((res) => {
@@ -50,8 +50,8 @@ function BookMarkItem() {
   }, []);
 
   const handleUnBookMark = (_id) => {
-    axios
-      .post("https://summer-blog-api.onrender.com/add/bookmark", {
+    api
+      .post("/add/bookmark", {
         articleid: _id,
         id: user?._id,
       })
@@ -67,7 +67,7 @@ function BookMarkItem() {
   };
 
   const bookMarkComponent =
-    bookMarks == undefined ? (
+    bookMarks === undefined || bookMarks?.length <= 0 ? (
       <p>No bookmark Yet</p>
     ) : (
       bookMarks.map((bookMark) => {

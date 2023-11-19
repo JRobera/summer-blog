@@ -3,7 +3,7 @@ import NavBar from "../component/nav_bar/NavBar";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { generateError, generatesuccess } from "../utility/Toasts";
 
 function Contact() {
@@ -32,8 +32,8 @@ function Contact() {
 
   const submit = (data) => {
     setIsSending(true);
-    axios
-      .post("https://summer-blog-api.onrender.com/api/send-message", data)
+    api
+      .post("/api/send-message", data)
       .then((response) => {
         if (response.status == 200) {
           generatesuccess(response.data);

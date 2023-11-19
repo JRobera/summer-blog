@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import DeleteAlert from "./DeleteAlert";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { Link } from "react-router-dom";
 
@@ -22,16 +22,14 @@ function ArticleDetailes({
   };
 
   const handleDeleteArticle = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/delete/article", { id })
-      .then((response) => {
-        if (response.status == 200) {
-          generatesuccess(response.data);
-          getAllArticles();
-        } else {
-          generateError(response.data);
-        }
-      });
+    api.post("/delete/article", { id }).then((response) => {
+      if (response.status == 200) {
+        generatesuccess(response.data);
+        getAllArticles();
+      } else {
+        generateError(response.data);
+      }
+    });
   };
 
   return (

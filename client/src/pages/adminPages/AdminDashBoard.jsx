@@ -6,7 +6,7 @@ import DeleteAdminAccount from "./DeleteAdminAccount";
 import ChangePassword from "./ChangePassword";
 import CreateNewAdmin from "./CreateNewAdmin";
 import ArticleEditor from "./ArticleEditor";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import jwtDecode from "jwt-decode";
 import AdminHomePage from "./AdminHomePage";
 
@@ -14,12 +14,8 @@ function AdminDashBoard() {
   const { setAdmin, setAccessToken, tab } = useContext(BlogContext);
 
   const refreshToken = () => {
-    axios
-      .post(
-        "https://summer-blog-api.onrender.com/refresh-token",
-        {},
-        { withCredentials: true }
-      )
+    api
+      .post("/refresh-token", {}, { withCredentials: true })
       .then((response) => {
         setAdmin(jwtDecode(response.data?.accessToken));
         setAccessToken(response.data?.accessToken);

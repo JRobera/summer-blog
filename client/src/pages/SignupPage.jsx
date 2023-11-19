@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { useNavigate } from "react-router-dom";
 import { generateError, generatesuccess } from "../utility/Toasts";
 import { BlogContext } from "../context/BlogContext";
@@ -40,8 +40,8 @@ function SignupPage() {
   };
 
   const submit = (data) => {
-    axios
-      .post("https://summer-blog-api.onrender.com/create/new-user", data, {
+    api
+      .post("/create/new-user", data, {
         withCredentials: true,
       })
       .then((res) => {

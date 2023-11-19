@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BlogContext } from "./context/BlogContext";
 import { generateError } from "./utility/Toasts";
-import axios from "axios";
+import api from "./utility/axios.js";
 import jwt_decode from "jwt-decode";
 import { Navigate, Outlet } from "react-router-dom";
 
 async function Auth() {
   try {
-    const response = await axios.post(
-      "https://summer-blog-api.onrender.com/user-refresh-token",
+    const response = await api.post(
+      "/user-refresh-token",
       {},
       {
         withCredentials: true,
@@ -31,12 +31,8 @@ function UserProtectedRoutes() {
       setIsAuth(result);
     }
     try {
-      axios
-        .post(
-          `https://summer-blog-api.onrender.com/user-refresh-token`,
-          {},
-          { withCredentials: true }
-        )
+      api
+        .post(`/user-refresh-token`, {}, { withCredentials: true })
         .then((response) => {
           setUser(jwt_decode(response.data?.accessToken));
           setAccessToken(response.data?.accessToken);

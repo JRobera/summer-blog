@@ -3,7 +3,7 @@ import { articles } from "../assets/articles";
 import NavBar from "../component/nav_bar/NavBar";
 import ArtPreview from "../component/ArticlePreview/ArtPreview";
 import SearchArticle from "../component/SearchArticle";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { BlogContext } from "../context/BlogContext";
 
 function Home() {
@@ -12,23 +12,19 @@ function Home() {
   const [latestArticle, setLatestArticle] = useState();
 
   useEffect(() => {
-    axios
-      .get("https://summer-blog-api.onrender.com/get/latest")
-      .then((response) => {
-        if (response.status == 200) {
-          setLatestArticle(response.data);
-        }
-      });
-    axios
-      .get("https://summer-blog-api.onrender.com/get/articles")
-      .then((response) => {
-        if (response.status == 200) {
-          setArticles(response.data);
-        }
-      });
+    api.get("/get/latest").then((response) => {
+      if (response.status == 200) {
+        setLatestArticle(response.data);
+      }
+    });
+    api.get("/get/articles").then((response) => {
+      if (response.status == 200) {
+        setArticles(response.data);
+      }
+    });
 
-    axios
-      .post("https://summer-blog-api.onrender.com/filterd/articles", {
+    api
+      .post("/filterd/articles", {
         id: user?._id,
       })
       .then((response) => {
@@ -54,7 +50,7 @@ function Home() {
         />
       </div>
       <div className="container mx-auto mt-8 border-t-[1px] border-t-[#7395ae] xl:w-4/5">
-        <p className="my-2 text-sm text-gray-300 font-semibold">For you</p>
+        <p className="my-2 text-gray-300 font-bold text-md">For you</p>
         <div className="flex overflow-x-auto py-2 sm:grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
           {filteredArticles?.map((article, i) => {
             return (
@@ -74,9 +70,7 @@ function Home() {
       </div>
 
       <div className="container mx-auto mt-8 border-t-[1px] border-t-[#7395ae] xl:w-4/5">
-        <p className="my-2 text-sm text-gray-300 font-semibold">
-          Recently writen
-        </p>
+        <p className="my-2 text-md text-gray-300 font-bold">Recently writen</p>
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
           {articles?.map((article, i) => {
             return (

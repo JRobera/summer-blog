@@ -180,7 +180,7 @@ const logOut = (req, res) => {
 };
 
 const editAboutUs = async (req, res) => {
-  console.log(req.file.mimetype);
+  // console.log(req.file.mimetype);
   About.deleteMany({}).then((response) => {});
   if (
     req.file.mimetype == "image/png" ||
@@ -189,7 +189,7 @@ const editAboutUs = async (req, res) => {
   ) {
     try {
       const data = await uploadToCloudinary(req.file.path, "about_us_img");
-      console.log(data);
+      // console.log(data);
 
       if (data) {
         const about = new About({

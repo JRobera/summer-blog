@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import ArticleDetailes from "./ArticleDetailes";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { useNavigate } from "react-router-dom";
 import { BlogContext } from "../../context/BlogContext";
@@ -22,29 +22,25 @@ function AdminHomePage() {
       const formData = new FormData();
       formData.append("profile-bg", file);
       formData.append("id", admin?._id);
-      axios
-        .post("https://summer-blog-api.onrender.com/change-bg", formData)
-        .then((res) => {
-          if (res.status == 200) {
-            generatesuccess(res.data);
-            setAdmin(res.data);
-          } else {
-            generateError(res.data);
-          }
-        });
+      api.post("/change-bg", formData).then((res) => {
+        if (res.status == 200) {
+          generatesuccess(res.data);
+          setAdmin(res.data);
+        } else {
+          generateError(res.data);
+        }
+      });
     } else {
       generateError("Invalid file formate!");
     }
   };
 
   const getAllArticles = () => {
-    axios
-      .get("https://summer-blog-api.onrender.com/get/articles")
-      .then((response) => {
-        if (response.status == 200) {
-          setArticles(response.data);
-        }
-      });
+    api.get("/get/articles").then((response) => {
+      if (response.status == 200) {
+        setArticles(response.data);
+      }
+    });
   };
 
   useEffect(() => {
@@ -78,9 +74,9 @@ function AdminHomePage() {
             className="bg-[#7396ae]/70 p-2 rounded-lg hover:text-[#557a95]"
             title="Logout"
             onClick={() => {
-              axios
+              api
                 .post(
-                  "https://summer-blog-api.onrender.com/admin/logout",
+                  "/admin/logout",
                   {},
                   {
                     withCredentials: true,
@@ -97,7 +93,7 @@ function AdminHomePage() {
           >
             Logout
           </button>
-          <p className="bg-[#7396ae]/70 p-2 rounded-full" title="Current user">
+          <p className="bg-[#7396ae]/70 p-2 rounded-md" title="Current user">
             {admin?.user}
           </p>
         </div>

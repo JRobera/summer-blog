@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../utility/axios.js";
 import { useContext, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { BlogContext } from "../context/BlogContext";
@@ -13,19 +13,14 @@ function ProfileSidebar({ handleEditClick, handleChangeClick }) {
       const formData = new FormData();
       formData.append("profile-img", file);
       formData.append("id", user?._id);
-      axios
-        .post(
-          "https://summer-blog-api.onrender.com/change-profile-image",
-          formData
-        )
-        .then((res) => {
-          if (res.status == 200) {
-            generatesuccess(res.data);
-            setUser(res.data);
-          } else {
-            generateError(res.data);
-          }
-        });
+      api.post("/change-profile-image", formData).then((res) => {
+        if (res.status == 200) {
+          generatesuccess(res.data);
+          setUser(res.data);
+        } else {
+          generateError(res.data);
+        }
+      });
     } else {
       generateError("Invalid file formate!");
     }

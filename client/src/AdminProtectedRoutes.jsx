@@ -1,14 +1,14 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useContext, useEffect, useState } from "react";
 import { BlogContext } from "./context/BlogContext";
+import api from "./utility/axios.js";
 
 async function Auth() {
   try {
-    const response = await axios.post(
-      "https://summer-blog-api.onrender.com/refresh-token",
+    const response = await api.post(
+      "/refresh-token",
       {},
       {
         withCredentials: true,
@@ -31,9 +31,9 @@ function AdminProtectedRoutes() {
       setIsAuth(result);
     }
     try {
-      axios
+      api
         .post(
-          `https://summer-blog-api.onrender.com/refresh-token`,
+          `/refresh-token`,
           {},
           {
             withCredentials: true,

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../utility/axios.js";
 import React, { useState } from "react";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 
@@ -28,20 +28,18 @@ function EditAbout() {
       formdata.append("profile", photo);
       formdata.append("text", aboutText);
 
-      axios
-        .post("https://summer-blog-api.onrender.com/edit/about", formdata)
-        .then((response) => {
-          if (response.status == 200) {
-            generatesuccess(response.data);
-            setAboutText("");
-            setSelectedFile("Select profile image");
-            setIsUploading(false);
-          } else {
-            generateError(response.data);
-            setSelectedFile("Select profile image");
-            setIsUploading(false);
-          }
-        });
+      api.post("/edit/about", formdata).then((response) => {
+        if (response.status == 200) {
+          generatesuccess(response.data);
+          setAboutText("");
+          setSelectedFile("Select profile image");
+          setIsUploading(false);
+        } else {
+          generateError(response.data);
+          setSelectedFile("Select profile image");
+          setIsUploading(false);
+        }
+      });
     } else {
       generateError("Invalid file formate!");
       setSelectedFile("Select profile image");

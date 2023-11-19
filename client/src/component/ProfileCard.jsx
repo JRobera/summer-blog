@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useContext } from "react";
+import api from "../utility/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { GoPerson } from "react-icons/go";
 import { BsBookmarks } from "react-icons/bs";
@@ -15,9 +15,9 @@ function ProfileCard() {
   };
 
   const handleLogout = () => {
-    axios
+    api
       .post(
-        "https://summer-blog-api.onrender.com/logout",
+        "/logout",
         {},
         {
           withCredentials: true,

@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules, formats } from "../../assets/reactQuill";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { useNavigate, useParams } from "react-router-dom";
-import { set } from "react-hook-form";
 
 function UpdateArticle() {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -25,8 +24,8 @@ function UpdateArticle() {
   };
 
   useEffect(() => {
-    axios
-      .get(`https://summer-blog-api.onrender.com/article/to-update/${id}`)
+    api
+      .get(`/article/to-update/${id}`)
       .then((res) => {
         const { header, tag, content } = res.data;
         setHeader(header);
@@ -49,25 +48,23 @@ function UpdateArticle() {
 
       setIsUpdating(true);
       if (header !== "" && value !== "" && thumbnail !== "" && tag !== "") {
-        axios
-          .post("https://summer-blog-api.onrender.com/update/article", formData)
-          .then((response) => {
-            if (response.status == 200) {
-              generatesuccess(response.data);
-              setHeader("");
-              setValue("");
-              setIsUpdating(false);
-              setSelectedFile("Select profile image");
-              setTag("Choose Tag here");
-              navigate("/profile");
-            } else {
-              setIsUpdating(false);
-              generateError(response.data);
-              setSelectedFile("Select profile image");
-              setTag("Choose Tag here");
-              navigate("/profile");
-            }
-          });
+        api.post("/update/article", formData).then((response) => {
+          if (response.status == 200) {
+            generatesuccess(response.data);
+            setHeader("");
+            setValue("");
+            setIsUpdating(false);
+            setSelectedFile("Select profile image");
+            setTag("Choose Tag here");
+            navigate("/profile");
+          } else {
+            setIsUpdating(false);
+            generateError(response.data);
+            setSelectedFile("Select profile image");
+            setTag("Choose Tag here");
+            navigate("/profile");
+          }
+        });
       } else {
         setIsUpdating(false);
         generateError("All inputs required!");

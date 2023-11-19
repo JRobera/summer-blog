@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { generatesuccess } from "../utility/Toasts";
-import { BiLike } from "react-icons/bi";
+import { BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import { FaRegComment } from "react-icons/fa";
 import { BlogContext } from "../context/BlogContext";
 import Comment from "../component/Comment";
+import api from "../utility/axios";
 
 function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
   const { user } = useContext(BlogContext);
@@ -21,44 +21,38 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
 
   // when the like button is clicked update the count rerender the component with handleRefresh
   const handleLike = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/like", payload)
-      .then((res) => {
-        if (res.data) {
-          handleRefresh();
-          // setLikeCount((likeCount) => likeCount + 1);
-        } else {
-          handleRefresh();
-          // setLikeCount((likeCount) => likeCount - 1);
-        }
-      });
+    api.post("/like", payload).then((res) => {
+      if (res.data) {
+        handleRefresh();
+        // setLikeCount((likeCount) => likeCount + 1);
+      } else {
+        handleRefresh();
+        // setLikeCount((likeCount) => likeCount - 1);
+      }
+    });
   };
   // when the dislike button is clicked update the count rerender the component with handleRefresh
   const handleDislike = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/dislike", payload)
-      .then((res) => {
-        if (res.data) {
-          handleRefresh();
-          // setDisLikeCount((disLikeCount) => disLikeCount + 1);
-        } else {
-          handleRefresh();
-          // setDisLikeCount((disLikeCount) => disLikeCount - 1);
-        }
-      });
+    api.post("/dislike", payload).then((res) => {
+      if (res.data) {
+        handleRefresh();
+        // setDisLikeCount((disLikeCount) => disLikeCount + 1);
+      } else {
+        handleRefresh();
+        // setDisLikeCount((disLikeCount) => disLikeCount - 1);
+      }
+    });
   };
 
   const commentPayload = { id: id, userid: user?._id, comment: newComment };
   const handleComment = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/new-comment", commentPayload)
-      .then((res) => {
-        if (res.status == 201) {
-          handleRefresh();
-          generatesuccess(res.data);
-          setNewComment("");
-        }
-      });
+    api.post("/new-comment", commentPayload).then((res) => {
+      if (res.status == 201) {
+        handleRefresh();
+        generatesuccess(res.data);
+        setNewComment("");
+      }
+    });
   };
 
   const handleCommentClick = () => {
@@ -72,15 +66,25 @@ function ArticleReaction({ id, likes, disLikes, comments, handleRefresh }) {
           className=" hover:text-white/70  flex gap-1 items-center text-sm"
           onClick={handleLike}
         >
-          <BiLike size={24} />
-          <sub>{likes}</sub>
+          {likes?.includes(user?._id) ? (
+            <BiSolidLike size={24} />
+          ) : (
+            <BiLike size={24} />
+          )}
+
+          <sub>{likes?.length}</sub>
         </div>
         <div
           className=" hover:text-white/70  flex gap-1 items-center text-sm"
           onClick={handleDislike}
         >
-          <BiDislike size={24} />
-          <sub>{disLikes}</sub>
+          {disLikes?.includes(user?._id) ? (
+            <BiSolidDislike size={24} />
+          ) : (
+            <BiDislike size={24} />
+          )}
+
+          <sub>{disLikes?.length}</sub>
         </div>
         <div
           className=" hover:text-white/70  flex gap-1 items-center text-sm"

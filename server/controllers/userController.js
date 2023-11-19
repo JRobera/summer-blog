@@ -185,7 +185,7 @@ const userLogin = (req, res) => {
           }
         });
       } else {
-        res.status(203).json("Invalid Accounte!");
+        res.status(203).json("Invalid Account!");
       }
     } else {
       res.status(203).json("User does not exist!");
@@ -783,7 +783,7 @@ const addView = async (req, res) => {
     );
     res.json(article);
   } catch (error) {
-    res.json(err);
+    res.json(error);
   }
 };
 
@@ -815,7 +815,7 @@ const getFilterdArticle = async (req, res) => {
   const { id } = req.body;
   const interests = await User.findOne({ _id: id }).select("interests -_id");
   // console.log(interests.interests);
-  Article.find({ tag: { $in: interests.interests } })
+  Article.find({ tag: { $in: interests.interests }, author: { $ne: id } })
     .sort({ $natural: -1 })
     .limit(10)
     .then((response) => {

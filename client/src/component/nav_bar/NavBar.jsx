@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NavLink from "./NavLink";
 import HamBurgerMenu from "../HamBurgerMenu";
-import axios from "axios";
 import { TfiWrite } from "react-icons/tfi";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { BlogContext } from "../../context/BlogContext";
 import SearchArticle from "../SearchArticle";
 import { BsSearch } from "react-icons/bs";
 import ProfileCard from "../ProfileCard";
+import api from "../../utility/axios";
 
 function NavBar() {
   const { user, setUser, accessToken, setAccessToken } =
@@ -19,13 +19,11 @@ function NavBar() {
   const [SearchVisiable, setSearchVisiable] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("https://summer-blog-api.onrender.com/get/articles")
-      .then((response) => {
-        if (response.status == 200) {
-          setArticles(response.data);
-        }
-      });
+    api.get("/get/articles").then((response) => {
+      if (response.status == 200) {
+        setArticles(response.data);
+      }
+    });
   }, []);
 
   const handleMenuClick = () => {
@@ -38,9 +36,9 @@ function NavBar() {
   };
 
   const handleLogout = () => {
-    axios
+    api
       .post(
-        "https://summer-blog-api.onrender.com/logout",
+        "/logout",
         {},
         {
           withCredentials: true,

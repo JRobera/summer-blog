@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { generateError, generatesuccess } from "../utility/Toasts";
 import { BlogContext } from "../context/BlogContext";
 import jwtDecode from "jwt-decode";
@@ -46,8 +46,8 @@ function SigninPage() {
   const submit = (data) => {
     if (attemptCount < 3) {
       setIsLoading(true);
-      axios
-        .post("https://summer-blog-api.onrender.com/login", data, {
+      api
+        .post("/login", data, {
           withCredentials: true,
         })
         .then((response) => {

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { generateError, generatesuccess } from "../utility/Toasts";
 
 function ResetPassword() {
@@ -35,11 +35,8 @@ function ResetPassword() {
   });
 
   const submit = (data) => {
-    axios
-      .post(
-        `https://summer-blog-api.onrender.com/reset-password/${token}/${id}`,
-        data
-      )
+    api
+      .post(`/reset-password/${token}/${id}`, data)
       .then((res) => {
         if (res.status == 200) {
           generatesuccess(res.data);

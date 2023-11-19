@@ -3,7 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { BlogContext } from "../../context/BlogContext";
 
@@ -30,8 +30,8 @@ function ChangePassword({ handleChangeClick }) {
   } = useForm({ resolver: yupResolver(schema) });
 
   const submit = (data) => {
-    axios
-      .post("https://summer-blog-api.onrender.com/change-password", {
+    api
+      .post("/change-password", {
         id: user?._id,
         ...data,
       })

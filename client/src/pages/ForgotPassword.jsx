@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { generateError, generatesuccess } from "../utility/Toasts";
 
 function ForgotPassword() {
@@ -20,8 +20,8 @@ function ForgotPassword() {
   } = useForm({ resolver: yupResolver(schema) });
 
   const submit = (data) => {
-    axios
-      .post("https://summer-blog-api.onrender.com/forgot/password", data)
+    api
+      .post("/forgot/password", data)
       .then((res) => {
         generatesuccess(res.data);
         reset();

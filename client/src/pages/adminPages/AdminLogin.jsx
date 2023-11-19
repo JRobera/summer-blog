@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -33,8 +33,8 @@ function AdminLogin() {
 
   const submit = (data) => {
     setIsLoading(true);
-    axios
-      .post("https://summer-blog-api.onrender.com/login/admin", data, {
+    api
+      .post("/login/admin", data, {
         withCredentials: true,
       })
       .then((response) => {

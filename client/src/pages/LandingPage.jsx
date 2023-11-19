@@ -27,7 +27,7 @@ function LandingPage() {
       </nav>
       <main className="flex flex-col gap-2 min-h-screen mt-2 rounded-md overflow-hidden sm:flex-row">
         <img
-          className="sm:w-1/2 rounded-md sm:rounded-none"
+          className="sm:w-1/2 rounded-md sm:rounded-none min-h-[400px]"
           src="https://res.cloudinary.com/dbv6hao81/image/upload/v1694610201/quil_ns1ryb.jpg"
           alt="landing page picture"
         />
@@ -36,7 +36,7 @@ function LandingPage() {
             Share your Knowleage with the world
           </h1>
           <div className="text-center">
-            <p className="w-11/12 text-sm mb-4 mx-auto">
+            <p className="w-11/12 text-sm text-left mb-4 mx-auto">
               Welcome to our blog, a platform dedicated to sharing knowledge and
               insights from a diverse community of contributors like you. We
               believe that everyone has valuable expertise and unique

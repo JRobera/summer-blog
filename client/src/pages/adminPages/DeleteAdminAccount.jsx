@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 
 function DeleteAdminAccount() {
@@ -24,8 +24,8 @@ function DeleteAdminAccount() {
       onSubmit={handleSubmit((data) => {
         setIsLoading(true);
 
-        axios
-          .post("https://summer-blog-api.onrender.com/delete/account", data)
+        api
+          .post("/delete/account", data)
           .then((response) => {
             if (response.status == 200) {
               generatesuccess(response.data);

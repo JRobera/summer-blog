@@ -4,7 +4,7 @@ import NavBar from "../../component/nav_bar/NavBar";
 import EditProfile from "./EditProfile";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { BlogContext } from "../../context/BlogContext";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import UserTabs from "./UserTabs";
 import PublishedArticle from "./PublishedArticle";
 import ChangePassword from "./ChangePassword";
@@ -36,8 +36,8 @@ function ProfilePage() {
   const [publishedArticles, setPublishedArticles] = useState();
 
   useEffect(() => {
-    axios
-      .post("https://summer-blog-api.onrender.com/get/published-article", {
+    api
+      .post("/get/published-article", {
         u_id: user?._id,
       })
       .then((res) => {
@@ -59,8 +59,8 @@ function ProfilePage() {
         return article?._id !== id;
       })
     );
-    axios
-      .post("https://summer-blog-api.onrender.com/delete/article", { id: id })
+    api
+      .post("/delete/article", { id: id })
       .then((res) => {
         if (res.status == 200) {
           generatesuccess(res.data);

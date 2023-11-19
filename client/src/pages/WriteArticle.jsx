@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { modules, formats } from "../assets/reactQuill";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { generateError, generatesuccess } from "../utility/Toasts";
 import { BlogContext } from "../context/BlogContext";
 import NavBar from "../component/nav_bar/NavBar";
@@ -36,27 +36,22 @@ function WriteArticle() {
       formData.append("article", value);
       setIsPublishing(true);
       if (header !== "" && value !== "" && thumbnail !== "" && tag !== "") {
-        axios
-          .post(
-            "https://summer-blog-api.onrender.com/publish/article",
-            formData
-          )
-          .then((response) => {
-            if (response.status == 200) {
-              generatesuccess(response.data);
-              setHeader("");
-              setValue("");
-              setIsPublishing(false);
-              setSelectedFile("Select profile image");
-              setTag("Choose Tag here");
-              navigate("/home");
-            } else {
-              setIsPublishing(false);
-              generateError(response.data);
-              setSelectedFile("Select profile image");
-              setTag("Choose Tag here");
-            }
-          });
+        api.post("/publish/article", formData).then((response) => {
+          if (response.status == 200) {
+            generatesuccess(response.data);
+            setHeader("");
+            setValue("");
+            setIsPublishing(false);
+            setSelectedFile("Select profile image");
+            setTag("Choose Tag here");
+            navigate("/home");
+          } else {
+            setIsPublishing(false);
+            generateError(response.data);
+            setSelectedFile("Select profile image");
+            setTag("Choose Tag here");
+          }
+        });
       } else {
         setIsPublishing(false);
         generateError("All inputs are required!");

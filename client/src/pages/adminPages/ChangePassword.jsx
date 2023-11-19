@@ -3,7 +3,7 @@ import { AES } from "crypto-js";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 import { BlogContext } from "../../context/BlogContext";
 
@@ -35,9 +35,9 @@ function ChangePassword() {
       onSubmit={handleSubmit((data) => {
         const { user } = admin;
         setIsLoading(true);
-        axios
+        api
           .post(
-            `https://summer-blog-api.onrender.com/update/password/${AES.encrypt(
+            `/update/password/${AES.encrypt(
               user,
               import.meta.env.VITE_SECRET_KEY
             )}`,

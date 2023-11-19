@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../component/nav_bar/NavBar";
-import axios from "axios";
+import api from "../utility/axios";
 
 function About() {
   const [about, setAbout] = useState();
 
   useEffect(() => {
-    axios
-      .get("https://summer-blog-api.onrender.com/about/info")
-      .then((response) => {
-        setAbout(response.data);
-      });
+    api.get("/about/info").then((response) => {
+      setAbout(response.data);
+    });
   }, []);
 
   return (

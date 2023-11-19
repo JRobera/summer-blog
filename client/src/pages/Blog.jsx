@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import api from "../utility/axios";
 import "react-quill/dist/quill.core.css";
 import NavBar from "../component/nav_bar/NavBar";
 import { generateError } from "../utility/Toasts";
-import axios from "axios";
 import { BlogContext } from "../context/BlogContext";
 import ArticleReaction from "./ArticleReaction";
 import Pay from "../component/Pay";
@@ -47,13 +47,10 @@ function Blog() {
   useEffect(() => {
     const isViewed = article?.view.includes(user?._id);
     const countView = async () => {
-      const viewCount = await axios.put(
-        "https://summer-blog-api.onrender.com/count-view",
-        {
-          id: id,
-          userid: user?._id,
-        }
-      );
+      const viewCount = await api.put("/count-view", {
+        id: id,
+        userid: user?._id,
+      });
     };
     if (!isViewed) {
       countView();
@@ -61,7 +58,7 @@ function Blog() {
   }, []);
 
   const handleRefresh = () => {
-    axios.get(`https://summer-blog-api.onrender.com/blog/${id}`).then((res) => {
+    api.get(`/blog/${id}`).then((res) => {
       if (res.status == 200) {
         setArticle(res.data);
       } else {
@@ -115,8 +112,8 @@ function Blog() {
         <div className="text-sm  sm:text-[0.9rem] " ref={myarticle}></div>
         <ArticleReaction
           id={id}
-          likes={article?.likes.length}
-          disLikes={article?.disLikes?.length}
+          likes={article?.likes}
+          disLikes={article?.disLikes}
           comments={article?.comments}
           handleRefresh={handleRefresh}
         />

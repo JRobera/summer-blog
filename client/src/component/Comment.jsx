@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BiLike } from "react-icons/bi";
 import ReplyComment from "./ReplyComment";
-import axios from "axios";
+import api from "../utility/axios.js";
 import { BlogContext } from "../context/BlogContext";
 
 function Comment({ id, comment, author, likes }) {
@@ -11,8 +11,8 @@ function Comment({ id, comment, author, likes }) {
   const { user } = useContext(BlogContext);
 
   const handleCommentLike = () => {
-    axios
-      .post("https://summer-blog-api.onrender.com/like/comment", {
+    api
+      .post("/like/comment", {
         id: id,
         userid: user?._id,
       })
@@ -27,14 +27,12 @@ function Comment({ id, comment, author, likes }) {
   };
 
   useEffect(() => {
-    axios
-      .post("https://summer-blog-api.onrender.com/get/reply", { commentid: id })
-      .then((res) => {
-        if (res) {
-          console.log(res.data);
-          // setReplys(res.data)
-        }
-      });
+    api.post("/get/reply", { commentid: id }).then((res) => {
+      if (res) {
+        console.log(res.data);
+        // setReplys(res.data)
+      }
+    });
   }, []);
 
   return (

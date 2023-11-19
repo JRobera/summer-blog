@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import api from "../../utility/axios.js";
 import { generateError, generatesuccess } from "../../utility/Toasts";
 
 function CreateNewAdmin() {
@@ -31,8 +31,8 @@ function CreateNewAdmin() {
       onSubmit={handleSubmit((data) => {
         if (data !== null) {
           setIsLoading(true);
-          axios
-            .post("https://summer-blog-api.onrender.com/new-admin", data)
+          api
+            .post("/new-admin", data)
             .then((response) => {
               if (response.status == 201) {
                 generatesuccess(response.data);
